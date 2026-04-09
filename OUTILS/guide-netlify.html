@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌐 Guide Complet Netlify - De la création au déploiement</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --primary-light: #4a5568;
+            --accent-color: #3182ce;
+            --background: #f7fafc;
+            --surface: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-on-primary: #ffffff;
+            --success: #276749;
+            --warning: #975a16;
+            --border-color: #e2e8f0;
+            --font-base: 18px;
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: var(--font-base);
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: var(--primary-color);
+            color: var(--text-on-primary);
+            padding: 30px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 10px; font-weight: 700; }
+        .header p { opacity: 0.95; font-size: 1.1em; }
+        .step-card {
+            background: var(--background);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .step-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        .step-card ol { margin-left: 25px; margin-top: 10px; }
+        .step-card li { margin: 12px 0; }
+        .step-card a { color: var(--accent-color); font-weight: 600; text-decoration: none; }
+        .step-card a:hover { text-decoration: underline; }
+        .step-card code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .screenshot {
+            background: #edf2f7;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(49, 130, 206, 0.4); }
+        .btn-print { background: var(--primary-light); }
+        .btn-success { background: var(--success); }
+        .info-box {
+            background: #ebf8ff;
+            border-left: 5px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-box strong { color: var(--primary-color); display: block; margin-bottom: 10px; font-weight: 600; }
+        .warning-box {
+            background: #fff7ed;
+            border-left: 5px solid #ed8936;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: var(--warning);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+        @media print { .btn { display: none; } body { background: white; } .container { box-shadow: none; } }
+        @media (max-width: 768px) { .container { padding: 25px; } .header h1 { font-size: 1.5em; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 Guide Complet Netlify</h1>
+            <p>De la création du compte au déploiement de ton site</p>
+            <button onclick="window.print()" class="btn btn-print" style="margin-top: 15px;">🖨️ Imprimer / PDF</button>
+            <a href="../support.html" class="btn" style="background: white; color: var(--primary-color); margin-top: 10px;">← Retour au Support</a>
+        </div>
+
+        <div class="info-box">
+            <strong>⏱️ Temps estimé :</strong> 15-20 minutes<br>
+            <strong>💰 Coût :</strong> 100% gratuit (plan Starter)<br>
+            <strong>📋 Pré-requis :</strong> Une adresse email valide
+        </div>
+
+        <div class="step-card">
+            <h3>📝 Étape 1 : Créer ton compte Netlify</h3>
+            <ol>
+                <li>Ouvre ton navigateur et va sur : <a href="https://app.netlify.com" target="_blank">app.netlify.com</a></li>
+                <li>Clique sur le bouton <strong>"Sign up"</strong> (en haut à droite)</li>
+                <li>Choisis une méthode d'inscription :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Email</strong> : Entre ton email et crée un mot de passe</li>
+                        <li><strong>GitHub</strong> : Si tu as un compte GitHub (recommandé)</li>
+                        <li><strong>GitLab</strong> ou <strong>Bitbucket</strong> : Autres options</li>
+                    </ul>
+                </li>
+                <li>Remplis le formulaire :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Full name</strong> : Ton nom complet (ex: Karine Martin)</li>
+                        <li><strong>Email</strong> : Ton email professionnel</li>
+                        <li><strong>Password</strong> : Un mot de passe fort (12+ caractères)</li>
+                    </ul>
+                </li>
+                <li>Coche la case pour accepter les conditions</li>
+                <li>Clique sur <strong>"Create account"</strong></li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>✅ Étape 2 : Vérifier ton email</h3>
+            <ol>
+                <li>Ouvre ta boîte email</li>
+                <li>Trouve l'email de Netlify (objet : "Verify your email address")</li>
+                <li>Clique sur le bouton <strong>"Verify email"</strong> dans l'email</li>
+                <li>✅ Ton compte est maintenant activé !</li>
+            </ol>
+            <div class="screenshot">
+                📧 [Email de vérification Netlify]<br>
+                Clique sur "Verify email" pour activer ton compte
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🏠 Étape 3 : Découvrir ton tableau de bord</h3>
+            <ol>
+                <li>Après vérification, tu arrives sur ton <strong>Dashboard Netlify</strong></li>
+                <li>Tu verras un message : <em>"You don't have any sites yet"</em></li>
+                <li>Clique sur <strong>"Add new site"</strong> → <strong>"Deploy manually"</strong></li>
+                <li>Une zone apparaît : <strong>"Drag and drop your site folder here"</strong></li>
+            </ol>
+            <div class="screenshot">
+                🖼️ [Zone de drag & drop Netlify]<br>
+                C'est ici que tu glisseras ton dossier pour déployer
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>📁 Étape 4 : Préparer ton dossier de site</h3>
+            <ol>
+                <li>Sur ton ordinateur, crée un nouveau dossier (ex: <code>karine-atomy</code>)</li>
+                <li>Dans ce dossier, mets ton fichier <code>index.html</code>
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>⚠️ Le fichier DOIT s'appeler <code>index.html</code> (en minuscules)</li>
+                        <li>⚠️ Il doit être à la RACINE du dossier (pas dans un sous-dossier)</li>
+                    </ul>
+                </li>
+                <li>(Optionnel) Ajoute d'autres fichiers si besoin (CSS, images, etc.)</li>
+            </ol>
+            <div style="background: #edf2f7; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: monospace;">
+                📁 karine-atomy/<br>
+                └── 📄 index.html  ← OBLIGATOIRE, à la racine
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🚀 Étape 5 : Déployer ton site (première fois)</h3>
+            <ol>
+                <li>Dans Netlify, assure-toi d'être sur la page "Add new site"</li>
+                <li><strong>Glisse ton dossier COMPLET</strong> dans la zone "Drag and drop your site folder here"
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>⚠️ Glisse le DOSSIER, pas les fichiers un par un !</li>
+                        <li>⚠️ Attends que la barre de progression atteigne 100%</li>
+                    </ul>
+                </li>
+                <li>Netlify upload et déploie automatiquement (30-60 secondes)</li>
+                <li>✅ Quand c'est fini, tu vois : <strong>"Published"</strong> avec un lien du type :<br>
+                <code>https://random-name-12345.netlify.app</code></li>
+                <li>Clique sur le lien pour voir ton site en ligne !</li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>🔗 Étape 6 : Personnaliser le nom de ton site</h3>
+            <ol>
+                <li>Dans Netlify, clique sur ton site (dans la liste "All sites")</li>
+                <li>Dans le menu gauche, clique sur <strong>"Site settings"</strong> (icône ⚙️)</li>
+                <li>Dans le sous-menu, clique sur <strong>"Domain management"</strong></li>
+                <li>Descends jusqu'à la section <strong>"Options"</strong></li>
+                <li>Clique sur <strong>"Edit site name"</strong></li>
+                <li>Dans le champ, tape le nom que tu veux (ex: <code>karine-atomy</code>)
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>✅ Uniquement lettres minuscules, chiffres, tirets</li>
+                        <li>❌ Pas d'espaces, pas d'accents, pas de majuscules</li>
+                        <li>⚠️ Le nom doit être UNIQUE sur tout Netlify</li>
+                    </ul>
+                </li>
+                <li>Clique sur <strong>"Save"</strong></li>
+                <li>✅ Ton nouveau lien : <code>https://karine-atomy.netlify.app</code></li>
+            </ol>
+            <div class="warning-box">
+                <strong>⚠️ Attention :</strong><br>
+                Après avoir changé le nom, l'ancien lien (random-name-12345.netlify.app) ne fonctionnera plus. Mets à jour tous tes partages !
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🔄 Étape 7 : Mettre à jour ton site (après modifications)</h3>
+            <ol>
+                <li>Modifie ton fichier <code>index.html</code> sur ton ordinateur</li>
+                <li>Enregistre les modifications</li>
+                <li>Va sur Netlify → Clique sur ton site → Onglet <strong>"Deploys"</strong></li>
+                <li>En haut de la page, trouve : <strong>"Need to update your site? Drag and drop your site folder here"</strong></li>
+                <li><strong>Glisse ton dossier COMPLET</strong> à nouveau dans cette zone</li>
+                <li>Attends 30 secondes → ✅ Site mis à jour !</li>
+            </ol>
+            <div class="info-box">
+                <strong>💡 Astuce Pro :</strong><br>
+                Garde toujours une copie de ton fichier index.html sur ton ordinateur. Comme ça, si tu fais une erreur, tu peux revenir en arrière !
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>✅ Étape 8 : Tester ton site</h3>
+            <ol>
+                <li>Ouvre ton lien Netlify dans un navigateur : <code>https://karine-atomy.netlify.app</code></li>
+                <li>Teste avec le paramètre parrain : <code>?parrain=karine</code> à la fin de l'URL</li>
+                <li>Vérifie que :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>✅ Le nom du parrain s'affiche en haut</li>
+                        <li>✅ Le champ "Qui vous a invité" est pré-rempli</li>
+                        <li>✅ Le formulaire fonctionne</li>
+                        <li>✅ Les liens WhatsApp/email sont corrects</li>
+                    </ul>
+                </li>
+                <li>Remplis le formulaire avec ton email de test</li>
+                <li>Vérifie que tu reçois l'email de confirmation</li>
+                <li>✅ Tout fonctionne ? Ton site est prêt à partager !</li>
+            </ol>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ Problèmes fréquents et solutions :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>"No index.html found"</strong> → Ton fichier n'est pas à la racine du dossier ou ne s'appelle pas exactement <code>index.html</code></li>
+                <li><strong>"Page not found" (404)</strong> → Vérifie que le fichier s'appelle bien <code>index.html</code> (minuscules, pas Index.HTML)</li>
+                <li><strong>Le formulaire ne marche pas</strong> → Vérifie ta clé API Brevo dans le code JavaScript</li>
+                <li><strong>L'email ne part pas</strong> → Vérifie que ton automatisation est ACTIVE dans Brevo</li>
+                <li><strong>Le déploiement est lent</strong> → Netlify met 30-60 secondes, sois patient !</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>🔗 Liens utiles :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><a href="https://app.netlify.com" target="_blank">Netlify Dashboard</a></li>
+                <li><a href="https://docs.netlify.com" target="_blank">Documentation officielle Netlify</a></li>
+                <li><a href="https://answers.netlify.com" target="_blank">Forum d'aide Netlify</a></li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">📞 Besoin d'aide ?</h3>
+            <a href="https://wa.me/33680244077?text=Salut%20Laurent%2C%20j'ai%20un%20problème%20avec%20Netlify%20!" target="_blank" class="btn btn-success">Contacter Laurent sur WhatsApp</a>
+            <a href="guide-brevo.html" class="btn">Voir le guide Brevo →</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>© 2026 Laurent - BEN MANAGER</strong></p>
+            <p>Partenaire Indépendant ATOMY</p>
+            <p style="margin-top: 10px;">
+                📧 maviservices20@gmail.com | 📱 +33 6 80 24 40 77
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗄️ Base de Données Pathologies - ATOMY</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --primary-light: #4a5568;
+            --accent-color: #3182ce;
+            --background: #f7fafc;
+            --surface: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-on-primary: #ffffff;
+            --success: #276749;
+            --warning: #975a16;
+            --danger: #c53030;
+            --border-color: #e2e8f0;
+            --font-base: 18px;
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: var(--font-base);
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: var(--primary-color);
+            color: var(--text-on-primary);
+            padding: 30px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 10px; font-weight: 700; }
+        .header p { opacity: 0.95; font-size: 1.1em; }
+        
+        /* Search & Filters */
+        .search-section {
+            background: var(--background);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            border: 2px solid var(--border-color);
+        }
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .search-box input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 1em;
+            background: white;
+            color: var(--text-primary);
+        }
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            background: var(--surface);
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s;
+            color: var(--text-primary);
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        
+        /* Pathology Cards */
+        .pathologies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 20px 0;
+        }
+        .pathology-card {
+            background: var(--surface);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .pathology-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border-color: var(--accent-color);
+        }
+        .pathology-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pathology-card .category {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        .pathology-card .products {
+            margin: 15px 0;
+        }
+        .pathology-card .products h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .pathology-card .products ul {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .pathology-card .products li {
+            margin: 5px 0;
+        }
+        .pathology-card .products a {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .pathology-card .products a:hover {
+            text-decoration: underline;
+        }
+        .pathology-card .dosage {
+            background: #ebf8ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid var(--accent-color);
+        }
+        .pathology-card .dosage strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+        .pathology-card .warning {
+            background: #fff7ed;
+            border-left: 4px solid var(--warning);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            color: var(--warning);
+            font-size: 0.95em;
+        }
+        .pathology-card .tips {
+            background: #c6f6d5;
+            border-left: 4px solid var(--success);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            color: var(--success);
+            font-size: 0.95em;
+        }
+        .pathology-card .actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95em;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+        }
+        .btn-secondary {
+            background: var(--primary-light);
+        }
+        .btn-copy {
+            background: var(--success);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 1.5em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--accent-color);
+        }
+        .modal-content .section {
+            margin: 25px 0;
+        }
+        .modal-content .section h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        .modal-content .products-list a {
+            display: block;
+            margin: 8px 0;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .modal-content .products-list a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 25px; }
+            .header h1 { font-size: 1.5em; }
+            .pathologies-grid { grid-template-columns: 1fr; }
+            .search-box { flex-direction: column; }
+            .search-box input { min-width: 100%; }
+        }
+        
+        /* Utilities */
+        .hidden { display: none; }
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ Base de Données Pathologies - ATOMY</h1>
+            <p>Guide pratique : Pathologies → Produits recommandés</p>
+            <p style="margin-top: 10px; font-size: 1em; opacity: 0.9;">
+                Mis à jour après chaque Zoom FAQ du jeudi • Source : Conseils Marie-José & équipe
+            </p>
+            <a href="../support.html" class="btn" style="background: white; color: var(--primary-color); margin-top: 15px;">← Retour au Support</a>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Rechercher une pathologie, un symptôme ou un produit...">
+            </div>
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Toutes</button>
+                <button class="filter-btn" data-filter="douleurs">Douleurs</button>
+                <button class="filter-btn" data-filter="hormonal">Hormonal</button>
+                <button class="filter-btn" data-filter="immunite">Immunité</button>
+                <button class="filter-btn" data-filter="digestif">Digestif</button>
+                <button class="filter-btn" data-filter="peau">Peau</button>
+                <button class="filter-btn" data-filter="fertilite">Fertilité</button>
+                <button class="filter-btn" data-filter="cancer">Cancer</button>
+            </div>
+        </div>
+
+        <!-- Pathologies Grid -->
+        <div class="pathologies-grid" id="pathologiesGrid">
+            <!-- Cards will be inserted here by JavaScript -->
+        </div>
+
+        <!-- No Results -->
+        <div id="noResults" class="text-center hidden" style="padding: 40px; color: var(--text-secondary);">
+            <p style="font-size: 1.2em;">🔍 Aucune pathologie trouvée pour cette recherche.</p>
+            <p style="margin-top: 10px;">Essayez avec d'autres mots-clés ou réinitialisez les filtres.</p>
+            <button class="btn btn-secondary mt-20" onclick="resetFilters()">Réinitialiser</button>
+        </div>
+    </div>
+
+    <!-- Modal for Detailed View -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>© 2026 Laurent - BEN MANAGER</strong></p>
+        <p>Partenaire Indépendant ATOMY • Base de données mise à jour chaque jeudi après le Zoom FAQ</p>
+        <p style="margin-top: 10px;">
+            ⚠️ <strong>Important :</strong> Ces conseils ne remplacent pas un avis médical. 
+            Toujours collaborer avec son médecin traitant.
+        </p>
+        <p style="margin-top: 10px;">
+            🛒 Boutique ATOMY : <a href="https://eu.atomy.com/main" target="_blank" style="color: var(--accent-color);">https://eu.atomy.com/main</a>
+        </p>
+    </div>
+
+    <script>
+        // ========== BASE DE DONNÉES PATHOLOGIES ==========
+        const pathologies = [
+            {
+                id: 'diabete',
+                title: 'Diabète',
+                category: 'hormonal',
+                summary: 'Soutien naturel pour la gestion de la glycémie et la santé pancréatique',
+                products: [
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Soutien immunitaire et pancréatique' },
+                    { name: 'Noni', link: 'https://eu.atomy.com/main', note: 'Renforce le système immunitaire' },
+                    { name: 'Glucoska Banaba', link: 'https://eu.atomy.com/main', note: 'Aide à faire entrer le glucose dans les cellules' },
+                    { name: 'Bitelone', link: 'https://eu.atomy.com/main', note: 'Soutien pancréatique, diminue la résistance à l\'insuline' },
+                    { name: 'Rodola (Chardon-Marie)', link: 'https://eu.atomy.com/main', note: 'Protège le foie, agit sur l\'HbA1c' }
+                ],
+                dosage: '• HemoHIM : 3 sachets/jour (matin, midi, soir)<br>• Noni : 1 sachet ou 1 petit contenant/jour<br>• Glucoska Banaba : 1 sachet/jour À JEUN avant le repas<br>• Bitelone : 2 capsules/jour APRÈS les repas<br>• Rodola : 1-2 capsules/jour',
+                warnings: '⚠️ Le Glucoska Banaba peut faire baisser la glycémie rapidement : tester régulièrement avec un glucomètre.<br>⚠️ Ne jamais arrêter un traitement médical sans avis du médecin.<br>⚠️ Collaboration essentielle avec le médecin traitant pour ajuster les médicaments.',
+                tips: '✅ Alimentation : beaucoup de légumes, protéines à chaque repas, éviter sucres raffinés et féculents blancs<br>✅ Eau filtrée, température ambiante<br>✅ Activité physique adaptée<br>✅ Suivi régulier de la glycémie',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'anticoagulants',
+                title: 'Anticoagulants (Eliquis) + HemoHIM',
+                category: 'immunite',
+                summary: 'Précautions lors de la prise conjointe d\'anticoagulants et de compléments ATOMY',
+                products: [
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'A un pouvoir anticoagulant naturel' },
+                    { name: 'Jin Konato', link: 'https://eu.atomy.com/main', note: 'Aussi anticoagulant - attention aux cumuls' }
+                ],
+                dosage: '• Si prise conjointe nécessaire : espacer d\'au moins 2-3 heures entre Eliquis et HemoHIM<br>• Alternative : prendre HemoHIM très tôt le matin et Eliquis plus tard',
+                warnings: '⚠️ HemoHIM a un pouvoir anticoagulant : risque accru d\'hémorragie si pris avec Eliquis, Warfarine, etc.<br>⚠️ Ne jamais arrêter un anticoagulant sans avis médical.<br>⚠️ Surveiller signes de saignement (ecchymoses, saignements de nez...).',
+                tips: '✅ Informer son médecin de tous les compléments pris<br>✅ Faire des prises de sang régulières pour surveiller l\'INR si sous anticoagulants<br>✅ Privilégier une alimentation équilibrée, éviter l\'excès de vitamine K (choux, épinards...) si sous Warfarine',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'fatigue-musculaire',
+                title: 'Fatigue / Perte de force musculaire',
+                category: 'douleurs',
+                summary: 'Soutien nutritionnel pour la récupération musculaire et la vitalité',
+                products: [
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, soutien cellulaire' },
+                    { name: 'Vitamine C', link: 'https://eu.atomy.com/main', note: 'Antioxydant, soutien immunitaire' },
+                    { name: 'Spiruline', link: 'https://eu.atomy.com/main', note: 'Riche en protéines et nutriments' },
+                    { name: 'Protéines (suppléments)', link: 'https://eu.atomy.com/main', note: 'Matériau de reconstruction musculaire' }
+                ],
+                dosage: '• Oméga-3 : 2 capsules/jour (matin + soir)<br>• Vitamine C : jusqu\'à 1-2 g/jour<br>• Spiruline : 2 comprimés/jour (plutôt matin/midi car donne de l\'énergie)<br>• Protéines : selon besoins, avec les repas',
+                warnings: '⚠️ En cas d\'hospitalisation ou maladie grave : toujours coordonner avec l\'équipe médicale.<br>⚠️ La spiruline peut donner de l\'énergie : éviter le soir si troubles du sommeil.',
+                tips: '✅ Petits exercices adaptés même au lit (mouvements avec poids légers)<br>✅ Éviter la sédentarité complète<br>✅ Protéines à chaque repas (œufs, viande blanche, légumineuses)<br>✅ Sommeil réparateur',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'douleurs-ventre-ado',
+                title: 'Douleurs ventre adolescent (17 ans) + fatigue',
+                category: 'digestif',
+                summary: 'Approche naturelle pour douleurs abdominales inexpliquées chez l\'adolescent',
+                products: [
+                    { name: 'Pack Santé (HemoHIM, Noni, Vit C, Oméga-3, Probiotique)', link: 'https://eu.atomy.com/main', note: 'Base de soutien global' },
+                    { name: 'Probiotique', link: 'https://eu.atomy.com/main', note: 'Équilibre du microbiote intestinal' },
+                    { name: 'Spiruline', link: 'https://eu.atomy.com/main', note: 'Nutrition dense, soutien énergétique' }
+                ],
+                dosage: '• Pack Santé : posologie standard<br>• Probiotique : 2 sachets/jour (soir)<br>• Spiruline : 2 comprimés/jour',
+                warnings: '⚠️ Douleurs abdominales persistantes : consulter pour éliminer causes organiques.<br>⚠️ Éviter l\'auto-diagnostic de parasites sans examen.',
+                tips: '✅ Eau : utiliser un filtre (Brita ou équivalent) pour éliminer toxines/médicaments de l\'eau du robinet<br>✅ Alimentation : éviter lait/produits laitiers, sucres raffinés, aliments ultra-transformés<br>✅ Privilégier aliments bio pour réduire exposition aux pesticides<br>✅ Observer les selles, fréquence, aspect',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'infertilite-masculine',
+                title: 'Faiblesse spermatozoïdes / Infertilité masculine',
+                category: 'fertilite',
+                summary: 'Soutien naturel pour la santé reproductive masculine',
+                products: [
+                    { name: 'Ginseng Rouge Coréen', link: 'https://eu.atomy.com/main', note: 'Soutient la vitalité et la testostérone' },
+                    { name: 'Saw Palmetto', link: 'https://eu.atomy.com/main', note: 'Soutien de la santé prostatique et hormonale' }
+                ],
+                dosage: '• Ginseng Rouge : 1 sachet/jour (dilué dans l\'eau)<br>• Saw Palmetto : 1 capsule/jour',
+                warnings: '⚠️ Infertilité : consulter un spécialiste pour bilan complet des deux partenaires.<br>⚠️ Les perturbateurs endocriniens (pesticides, plastiques...) impactent la fertilité : limiter l\'exposition.',
+                tips: '✅ Alimentation bio pour réduire pesticides/perturbateurs endocriniens<br>✅ Pour la partenaire : acide folique, Oméga-3, multivitamines pour préparer une grossesse<br>✅ Éviter tabac, alcool, stress excessif<br>✅ Activité physique régulière modérée',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'douleurs-dos-chute',
+                title: 'Douleurs dos post-chute / Problème colonne',
+                category: 'douleurs',
+                summary: 'Soutien anti-inflammatoire et récupération après traumatisme dorsal',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire naturel' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, soutien articulaire' },
+                    { name: 'Thermacin', link: 'https://eu.atomy.com/main', note: 'Curcuma + glucosamine pour articulations' },
+                    { name: 'Etheral Patch', link: 'https://eu.atomy.com/main', note: 'Application locale pour douleurs' }
+                ],
+                dosage: '• HemoHIM : 3-4 sachets/jour si douleurs importantes<br>• Oméga-3 : 2 capsules/jour<br>• Thermacin : selon posologie boîte<br>• Etheral Patch : application locale selon besoin',
+                warnings: '⚠️ Si prise d\'anti-inflammatoires (Naproxène...) : ajouter Rodola pour protéger le foie.<br>⚠️ Douleurs persistantes ou neurologiques : consulter pour imagerie (IRM, scanner).',
+                tips: '✅ Mouvements doux adaptés pour éviter l\'enraidissement<br>✅ Chaud/froid selon tolérance pour soulager<br>✅ Posture adaptée, évitez les positions prolongées douloureuses<br>✅ Patience : la récupération prend du temps',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'picotements-sein-menopause',
+                title: 'Picotements sein (50 ans, préménopause)',
+                category: 'hormonal',
+                summary: 'Soutien hormonal et confort mammaire en période de ménopause',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'Sophora Queen', link: 'https://eu.atomy.com/main', note: 'Phyto-œstrogènes pour équilibre hormonal' }
+                ],
+                dosage: '• Pack Santé : posologie standard<br>• Sophora Queen : selon posologie boîte<br>• HemoHIM : commencer par 2 sachets/jour, surveiller réaction',
+                warnings: '⚠️ Tout symptôme mammaire nouveau : consulter et faire les examens recommandés (mammographie...).<br>⚠️ Si prise d\'HemoHIM : surveiller l\'évolution des symptômes, arrêter si exacerbation.<br>⚠️ Les phyto-œstrogènes (soja, Sophora) : opinions partagées, privilégier sources bio.',
+                tips: '✅ Éviter lait de vache (souvent facteur aggravant)<br>✅ Gérer le stress : respiration, relaxation, sommeil<br>✅ Alimentation riche en légumes, oméga-3<br>✅ Auto-palpation mensuelle des seins',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'pilosite-hormonale',
+                title: 'Pilosité excessive femme (dérèglement hormonal)',
+                category: 'hormonal',
+                summary: 'Équilibre hormonal naturel pour réduire l\'hirsutisme',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'Saw Palmetto', link: 'https://eu.atomy.com/main', note: 'Aide à équilibrer androgènes/œstrogènes' }
+                ],
+                dosage: '• Pack Santé : posologie standard<br>• Saw Palmetto : 1 capsule/jour',
+                warnings: '⚠️ Pilosité excessive : consulter pour bilan hormonal (androgènes, SOPK, thyroïde...).<br>⚠️ Les perturbateurs endocriniens aggravent les déséquilibres : limiter exposition.',
+                tips: '✅ Alimentation bio pour réduire pesticides/perturbateurs<br>✅ Gérer le stress (impact sur les hormones)<br>✅ Sommeil régulier et réparateur<br>✅ Activité physique modérée régulière',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'post-cancer-prostate',
+                title: 'Post-cancer prostate + désir d\'enfant',
+                category: 'cancer',
+                summary: 'Soutien post-traitement et considérations pour fertilité',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Soutien immunitaire, prévention récidive' },
+                    { name: 'Vitamine C', link: 'https://eu.atomy.com/main', note: 'Antioxydant puissant' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, santé cellulaire' },
+                    { name: 'Saw Palmetto', link: 'https://eu.atomy.com/main', note: 'Soutien prostatique' }
+                ],
+                dosage: '• HemoHIM : jusqu\'à 4 sachets/jour pour prévention récidive<br>• Vitamine C : 2 g/jour<br>• Oméga-3 : 3-4 capsules/jour<br>• Saw Palmetto : 1 capsule/jour',
+                warnings: '⚠️ Désir d\'enfant post-cancer : CONSULTER UN SPÉCIALISTE DE LA FERTILITÉ.<br>⚠️ Selon traitement reçu (ablation prostate, hormonothérapie...), des techniques d\'assistance (ponction sperme, insémination) peuvent être nécessaires.<br>⚠️ La santé des spermatozoïdes impacte celle du futur bébé : optimiser avant conception.',
+                tips: '✅ Bilan de fertilité complet pour les deux partenaires<br>✅ Mode de vie sain : alimentation bio, éviter toxiques, gérer stress<br>✅ Pour la partenaire : acide folique, Oméga-3, multivitamines avant conception<br>✅ Patience et accompagnement professionnel',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'urticaire-dermographisme',
+                title: 'Urticaire / Dermographisme (démangeaisons chroniques)',
+                category: 'peau',
+                summary: 'Approche naturelle pour les réactions cutanées allergiques/inflammatoires',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Régulation immunitaire, anti-allergique' },
+                    { name: 'Vitamine C', link: 'https://eu.atomy.com/main', note: 'Antihistaminique naturel, antioxydant' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire puissant' }
+                ],
+                dosage: '• HemoHIM : 3-4 sachets/jour (augmenter progressivement)<br>• Vitamine C : 2 g/jour<br>• Oméga-3 : 3-4 capsules/jour',
+                warnings: '⚠️ Démangeaisons chroniques : consulter allergologue/dermatologue pour bilan.<br>⚠️ HemoHIM : attention si allergie aux ombellifères (carotte, céleri, fenouil...).',
+                tips: '✅ Élimination alimentaire : tester sans lait, sans gluten, sans sucres raffinés<br>✅ Eau filtrée, éviter eau du robinet<br>✅ Aérer la maison quotidiennement (15 min)<br>✅ Gérer le stress (impact sur l\'histamine)<br>✅ Sommeil réparateur, coucher à heures régulières<br>✅ Draps en coton naturel, changés fréquemment',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'algodystrophie',
+                title: 'Algodystrophie (douleur chronique post-traumatique)',
+                category: 'douleurs',
+                summary: 'Soutien anti-inflammatoire et nerveux pour syndromes douloureux complexes',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, soutien immunitaire' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, soutien nerveux' },
+                    { name: 'Thermacin', link: 'https://eu.atomy.com/main', note: 'Curcuma + glucosamine pour articulations' },
+                    { name: 'B Complexe / Propactamine', link: 'https://eu.atomy.com/main', note: 'Soutien nerveux (B6)' },
+                    { name: 'Etheral Patch', link: 'https://eu.atomy.com/main', note: 'Soulagement local' }
+                ],
+                dosage: '• HemoHIM : 3-4 sachets/jour<br>• Oméga-3 : 2-4 capsules/jour<br>• Thermacin : selon posologie<br>• B Complexe : 1/jour ou Propactamine (multivitamine avec B5/B6)',
+                warnings: '⚠️ Algodystrophie : prise en charge médicale pluridisciplinaire souvent nécessaire.<br>⚠️ Douleurs neuropathiques : peuvent nécessiter des traitements spécifiques.',
+                tips: '✅ Priorité si budget limité : HemoHIM + Thermacin + Oméga-3<br>✅ Mouvements doux adaptés pour éviter l\'enraidissement<br>✅ Gestion du stress (impact sur la douleur)<br>✅ Sommeil de qualité<br>✅ Accompagnement kiné/ostéo/acupuncture si possible',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'eczema-couple',
+                title: 'Eczéma (couple, manifestations relationnelles)',
+                category: 'peau',
+                summary: 'Approche globale pour eczéma : cutané, émotionnel, environnemental',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'Noni', link: 'https://eu.atomy.com/main', note: 'Analgésique, anti-inflammatoire' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, santé cutanée' },
+                    { name: 'Ultra Plus Body Wash', link: 'https://eu.atomy.com/main', note: 'Nettoyant doux pour peau sensible' },
+                    { name: 'Ultra Plus Body Cream', link: 'https://eu.atomy.com/main', note: 'Hydratation apaisante' }
+                ],
+                dosage: '• Pack Santé : posologie standard<br>• Noni : 1 sachet/jour<br>• Oméga-3 : 2-4 capsules/jour<br>• Body Wash/Cream : usage quotidien selon besoin',
+                warnings: '⚠️ Eczéma : peut être lié à allergie, stress, déséquilibre intestinal.<br>⚠️ Si manifestations en couple : explorer dimension relationnelle/émotionnelle.',
+                tips: '✅ Draps en coton naturel, changés chaque semaine<br>✅ Éviter textiles synthétiques (irritants)<br>✅ Acariens : laver draps à 60°C, aérer chambre<br>✅ Gestion du stress en couple<br>✅ Alimentation : tester élimination lait/gluten si suspicion d\'intolérance',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'tension-fluctuante',
+                title: 'Tension artérielle fluctuante',
+                category: 'hormonal',
+                summary: 'Soutien naturel pour l\'équilibre tensionnel',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Soutien circulatoire' },
+                    { name: 'B Complexe / Propactamine', link: 'https://eu.atomy.com/main', note: 'Gestion du stress (B5)' },
+                    { name: 'Lei', link: 'https://eu.atomy.com/main', note: 'Soutien tensionnel (si prescrit)' }
+                ],
+                dosage: '• HemoHIM : 3 sachets/jour<br>• B Complexe : 1/jour ou Propactamine<br>• Lei : selon prescription médicale',
+                warnings: '⚠️ Tension fluctuante : surveiller régulièrement, consulter si valeurs extrêmes.<br>⚠️ Ne pas arrêter un traitement antihypertenseur sans avis médical.',
+                tips: '✅ Exercices de respiration pour faire baisser la tension instantanément<br>✅ Éviter stress, caféine excessive, sel<br>✅ Sommeil régulier<br>✅ Activité physique douce régulière<br>✅ Auto-mesure tensionnelle à heures fixes',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'polyarthrite-gougerot',
+                title: 'Polyarthrite rhumatoïde + Syndrome de Gougerot',
+                category: 'immunite',
+                summary: 'Soutien immunitaire et articulaire pour maladies auto-immunes',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Régulation immunitaire' },
+                    { name: 'Noni', link: 'https://eu.atomy.com/main', note: 'Analgésique, anti-inflammatoire' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire puissant' }
+                ],
+                dosage: '• HemoHIM : jusqu\'à 4 sachets/jour selon tolérance<br>• Noni : 1-2 sachets/jour<br>• Oméga-3 : 3-4 capsules/jour',
+                warnings: '⚠️ Maladies auto-immunes : certains avis déconseillent la stimulation immunitaire.<br>⚠️ Toujours coordonner avec le rhumatologue/immunologue.<br>⚠️ Surveiller l\'évolution des symptômes.',
+                tips: '✅ Sécheresse oculaire/buccale (Gougerot) : larmes artificielles, hydratation fréquente<br>✅ Gestion du stress (impact sur poussées)<br>✅ Activité physique adaptée pour mobilité articulaire<br>✅ Alimentation anti-inflammatoire (oméga-3, légumes, épices)',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'cancer-chimio',
+                title: 'Cancer + Chimiothérapie',
+                category: 'cancer',
+                summary: 'Précautions et soutien pendant les traitements oncologiques',
+                products: [
+                    { name: 'Vitamine C', link: 'https://eu.atomy.com/main', note: 'Antioxydant, soutien immunitaire' },
+                    { name: 'Spiruline', link: 'https://eu.atomy.com/main', note: 'Nutrition dense, antioxydant' },
+                    { name: 'Pomme-Grenade', link: 'https://eu.atomy.com/main', note: 'Antioxydant puissant' },
+                    { name: 'Oméga-3', link: 'https://eu.atomy.com/main', note: 'Anti-inflammatoire, soutien cellulaire' }
+                ],
+                dosage: '• Vitamine C : 2 g/jour<br>• Spiruline : 2 comprimés/jour<br>• Pomme-Grenade : selon posologie<br>• Oméga-3 : 3-4 capsules/jour<br>• HemoHIM : ⚠️ ARRÊTER 3 jours AVANT chimio, reprendre 3 jours APRÈS',
+                warnings: '⚠️⚠️⚠️ HemoHIM et chimiothérapie : interactions possibles.<br>⚠️ ARRÊTER HemoHIM 3 jours avant chaque séance de chimio/radio.<br>⚠️ Reprendre HemoHIM 3 jours après la séance.<br>⚠️ TOUJOURS informer l\'oncologue des compléments pris.<br>⚠️ Ne jamais substituer un traitement oncologique par des compléments.',
+                tips: '✅ Pendant les jours sans chimio : Pack Santé peut aider à la récupération<br>✅ Hydratation abondante pour éliminer les toxines<br>✅ Alimentation légère, nutritive, facile à digérer<br>✅ Repos, gestion du stress, soutien émotionnel<br>✅ Tenir un journal des effets secondaires pour en parler à l\'équipe soignante',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'sequelles-neuro-lcr',
+                title: 'Séquelles neurologiques + Fuite de LCR',
+                category: 'douleurs',
+                summary: 'Soutien pour céphalées, douleurs neuropathiques et fuite de liquide céphalo-rachidien',
+                products: [
+                    { name: 'Pack Santé', link: 'https://eu.atomy.com/main', note: 'Base de soutien' },
+                    { name: 'Etheral Patch', link: 'https://eu.atomy.com/main', note: 'Soulagement local des douleurs' },
+                    { name: 'Calcium-Magnésium', link: 'https://eu.atomy.com/main', note: 'Soutien nerveux et musculaire' },
+                    { name: 'Probiotiques / SCI Microbiom', link: 'https://eu.atomy.com/main', note: 'Équilibre intestinal, axe intestin-cerveau' }
+                ],
+                dosage: '• Pack Santé : posologie standard<br>• Etheral Patch : application locale selon besoin<br>• Calcium-Magnésium : 2 comprimés/jour<br>• Probiotiques : 1 sachet/jour (soir)',
+                warnings: '⚠️ Fuite chronique de LCR : condition médicale complexe nécessitant suivi neurologique spécialisé.<br>⚠️ Blood patch alternatif : demander à son médecin si colle de fibrine ou scellant est envisageable.<br>⚠️ Douleurs neuropathiques : peuvent nécessiter des traitements spécifiques.',
+                tips: '✅ Prise en charge pluridisciplinaire : neurologue, kiné, ostéo, acupuncture...<br>✅ Position allongée pour soulager les céphalées post-ponction<br>✅ Hydratation abondante<br>✅ Éviter efforts, port de charges, toux forte<br>✅ Journal des symptômes pour suivre l\'évolution',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'drepanocytose-enfant',
+                title: 'Drépanocytose (enfant 4 ans)',
+                category: 'immunite',
+                summary: 'Soutien nutritionnel adapté pour la drépanocytose pédiatrique',
+                products: [
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'Soutien formation globules rouges - PRUDENCE <6 ans' },
+                    { name: 'Probiotiques Enfants', link: 'https://eu.atomy.com/main', note: 'Soutien immunitaire intestinal' },
+                    { name: 'Vitamine C', link: 'https://eu.atomy.com/main', note: 'Antioxydant, soutien immunitaire' },
+                    { name: 'Multivitamine Enfants (SANS FER)', link: 'https://eu.atomy.com/main', note: 'Nutrition adaptée' },
+                    { name: 'Spiruline', link: 'https://eu.atomy.com/main', note: 'Étude Niger : réduction crises, dose réduite' }
+                ],
+                dosage: '• HemoHIM : ⚠️ Pas recommandé avant 6 ans sans avis pédiatre<br>• Probiotiques enfants : 1 sachet/jour<br>• Vitamine C : dose enfant (250-500 mg/jour)<br>• Multivitamine enfants : selon posologie enfant<br>• Spiruline : 1 comprimé/jour (dose réduite)',
+                warnings: '⚠️⚠️⚠️ Drépanocytose : EXCÈS DE FER fréquent - ÉVITER les suppléments contenant du fer.<br>⚠️ Toujours vérifier la composition des multivitamines enfants.<br>⚠️ HemoHIM avant 6 ans : uniquement avec avis pédiatre, dose réduite.<br>⚠️ Coordination essentielle avec l\'équipe médicale spécialisée.',
+                tips: '✅ Hydratation abondante (prévient les crises)<br>✅ Éviter froid, stress, efforts intenses (facteurs déclenchants)<br>✅ Vaccinations à jour, prévention infections<br>✅ Alimentation équilibrée, riche en nutriments<br>✅ Suivi régulier avec centre de référence drépanocytose',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            },
+            {
+                id: 'allergies-hemohim',
+                title: 'Allergies (sulfites, quinine) + HemoHIM',
+                category: 'immunite',
+                summary: 'Compatibilité HemoHIM avec allergies spécifiques',
+                products: [
+                    { name: 'HemoHIM', link: 'https://eu.atomy.com/main', note: 'OK sauf allergie aux ombellifères' }
+                ],
+                dosage: '• HemoHIM : posologie standard (commencer par 2 sachets/jour, augmenter progressivement)',
+                warnings: '⚠️ HemoHIM contient des plantes de la famille des ombellifères (angélique, cnidium, pivoine).<br>⚠️ Contre-indiqué en cas d\'allergie connue aux ombellifères (carotte, céleri, fenouil, persil...).<br>⚠️ Pas d\'interaction connue avec allergies aux sulfites ou à la quinine.',
+                tips: '✅ Test de tolérance : commencer par une faible dose, observer 48h<br>✅ Tenir un journal des réactions<br>✅ En cas de doute : consulter allergologue avec la composition d\'HemoHIM',
+                source: 'Zoom FAQ - Marie-José, [DATE]'
+            }
+        ];
+
+        // ========== RENDER FUNCTIONS ==========
+        function renderPathologies(filter = 'all', search = '') {
+            const grid = document.getElementById('pathologiesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            let filtered = pathologies.filter(p => {
+                const matchesCategory = filter === 'all' || p.category === filter;
+                const matchesSearch = search === '' || 
+                    p.title.toLowerCase().includes(search.toLowerCase()) ||
+                    p.summary.toLowerCase().includes(search.toLowerCase()) ||
+                    p.products.some(prod => prod.name.toLowerCase().includes(search.toLowerCase()));
+                return matchesCategory && matchesSearch;
+            });
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            grid.innerHTML = filtered.map(p => `
+                <div class="pathology-card" onclick="openModal('${p.id}')">
+                    <span class="category">${getCategoryLabel(p.category)}</span>
+                    <h3>${p.title}</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 15px;">${p.summary}</p>
+                    
+                    <div class="products">
+                        <h4>Produits recommandés :</h4>
+                        <ul>
+                            ${p.products.slice(0, 3).map(prod => `<li><a href="${prod.link}" target="_blank">${prod.name}</a>${prod.note ? ` - ${prod.note}` : ''}</li>`).join('')}
+                            ${p.products.length > 3 ? `<li style="color: var(--text-secondary);">+ ${p.products.length - 3} autre(s)...</li>` : ''}
+                        </ul>
+                    </div>
+                    
+                    <div class="dosage">
+                        <strong>📋 Posologie :</strong>
+                        ${p.dosage.split('<br>')[0]}
+                    </div>
+                    
+                    ${p.warnings ? `<div class="warning"><strong>⚠️ Précautions :</strong><br>${p.warnings.split('<br>')[0]}</div>` : ''}
+                    
+                    <div class="actions">
+                        <button class="btn" onclick="event.stopPropagation(); openModal('${p.id}')">Voir détails</button>
+                        <button class="btn btn-copy" onclick="event.stopPropagation(); copyFiche('${p.id}')">📋 Copier la fiche</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getCategoryLabel(cat) {
+            const labels = {
+                'douleurs': 'Douleurs',
+                'hormonal': 'Hormonal',
+                'immunite': 'Immunité',
+                'digestif': 'Digestif',
+                'peau': 'Peau',
+                'fertilite': 'Fertilité',
+                'cancer': 'Cancer'
+            };
+            return labels[cat] || cat;
+        }
+
+        function openModal(id) {
+            const p = pathologies.find(x => x.id === id);
+            if (!p) return;
+            
+            document.getElementById('modalBody').innerHTML = `
+                <h2>${p.title}</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;"><em>${p.summary}</em></p>
+                
+                <div class="section">
+                    <h3>🛒 Produits ATOMY recommandés</h3>
+                    <div class="products-list">
+                        ${p.products.map(prod => `
+                            <a href="${prod.link}" target="_blank">
+                                • ${prod.name} ${prod.note ? `<span style="color: var(--text-secondary); font-weight: normal;">- ${prod.note}</span>` : ''}
+                            </a>
+                        `).join('')}
+                    </div>
+                    <p style="margin-top: 15px;">
+                        <a href="https://eu.atomy.com/main" target="_blank" class="btn">
+                            🛒 Accéder à la boutique ATOMY
+                        </a>
+                    </p>
+                </div>
+                
+                <div class="section">
+                    <h3>📋 Posologies</h3>
+                    <div style="background: #ebf8ff; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent-color);">
+                        ${p.dosage}
+                    </div>
+                </div>
+                
+                ${p.warnings ? `
+                <div class="section">
+                    <h3>⚠️ Précautions importantes</h3>
+                    <div style="background: #fff7ed; padding: 15px; border-radius: 8px; border-left: 4px solid var(--warning); color: var(--warning);">
+                        ${p.warnings}
+                    </div>
+                </div>` : ''}
+                
+                ${p.tips ? `
+                <div class="section">
+                    <h3>💡 Conseils complémentaires</h3>
+                    <div style="background: #c6f6d5; padding: 15px; border-radius: 8px; border-left: 4px solid var(--success); color: var(--success);">
+                        ${p.tips}
+                    </div>
+                </div>` : ''}
+                
+                <div class="section">
+                    <h3>📚 Source</h3>
+                    <p style="color: var(--text-secondary);">${p.source}</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-copy" onclick="copyFiche('${p.id}')">📋 Copier toute la fiche</button>
+                    <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+                </div>
+            `;
+            
+            document.getElementById('detailModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function copyFiche(id) {
+            const p = pathologies.find(x => x.id === id);
+            if (!p) return;
+            
+            const text = `📋 FICHE : ${p.title}
+
+🔹 Résumé : ${p.summary}
+
+🛒 PRODUITS RECOMMANDÉS :
+${p.products.map(prod => `• ${prod.name} - ${prod.note || ''}`).join('\n')}
+
+📋 POSOLOGIES :
+${p.dosage.replace(/<br>/g, '\n')}
+
+${p.warnings ? `⚠️ PRÉCAUTIONS :
+${p.warnings.replace(/<br>/g, '\n')}
+` : ''}
+${p.tips ? `💡 CONSEILS :
+${p.tips.replace(/<br>/g, '\n')}
+` : ''}
+📚 Source : ${p.source}
+
+⚠️ Important : Ces conseils ne remplacent pas un avis médical. Toujours collaborer avec son médecin traitant.
+
+🛒 Boutique ATOMY : https://eu.atomy.com/main`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Fiche copiée dans le presse-papiers !');
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+            renderPathologies();
+        }
+
+        // ========== EVENT LISTENERS ==========
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+            renderPathologies(activeFilter, e.target.value);
+        });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const search = document.getElementById('searchInput').value;
+                renderPathologies(btn.dataset.filter, search);
+            });
+        });
+
+        // Close modal on outside click
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('detailModal')) {
+                closeModal();
+            }
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // ========== INIT ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPathologies();
+        });
+    </script>
+</body>
+</html>

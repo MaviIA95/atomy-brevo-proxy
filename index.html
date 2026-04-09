@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ATOMY - Opportunité de business en ligne 100% gratuite.">
+    <title>ATOMY - Votre Boutique en Ligne GRATUITE | Opportunité 2026</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --primary-light: #4a5568;
+            --accent-color: #3182ce;
+            --background: #f7fafc;
+            --surface: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-on-primary: #ffffff;
+            --success: #276749;
+            --warning: #975a16;
+            --border-color: #e2e8f0;
+            --font-base: 18px;
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: var(--font-base);
+            overflow-x: hidden;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate { animation: fadeIn 0.8s ease-out; }
+        .header {
+            background: var(--primary-color);
+            color: var(--text-on-primary);
+            padding: 25px 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size: 1.6em; margin: 0; font-weight: 600; }
+        .section {
+            min-height: 100vh;
+            padding: 130px 20px 80px;
+            display: none;
+        }
+        .section.active { display: block; animation: fadeIn 0.6s ease-out; }
+        .hero { background: var(--primary-color); color: var(--text-on-primary); text-align: center; }
+        .hero-content { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .hero h2 { font-size: 2.2em; margin-bottom: 20px; line-height: 1.4; font-weight: 700; }
+        .highlight-box {
+            background: rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: var(--radius);
+            margin: 25px 0;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .highlight-box h3 { font-size: 1.6em; margin-bottom: 15px; color: #ffd700; }
+        .highlight-box ul { list-style: none; }
+        .highlight-box li { padding: 8px 0; font-size: 1.1em; }
+        .cta-button {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 18px 45px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            margin: 15px 10px;
+            box-shadow: 0 5px 20px rgba(49, 130, 206, 0.3);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            min-width: 280px;
+            cursor: pointer;
+        }
+        .cta-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(49, 130, 206, 0.5); border-color: white; }
+        .cta-info { background: var(--success); box-shadow: 0 5px 20px rgba(39, 103, 73, 0.3); }
+        .cta-info:hover { box-shadow: 0 8px 25px rgba(39, 103, 73, 0.5); }
+        .benefits { background: var(--background); }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2em; color: var(--primary-color); margin-bottom: 40px; font-weight: 700; }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+            justify-items: center;
+        }
+        .benefits-grid > :nth-child(5):last-child { grid-column: 1 / -1; max-width: 320px; margin: 0 auto; }
+        .benefit-card {
+            background: var(--surface);
+            padding: 35px 25px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border: 2px solid var(--border-color);
+        }
+        .benefit-icon { font-size: 2.5em; margin-bottom: 15px; }
+        .benefit-card h3 { color: var(--primary-color); margin: 15px 0 12px; font-size: 1.3em; font-weight: 600; }
+        .optin { background: linear-gradient(135deg, #4a5568 0%, #2c5282 100%); text-align: center; }
+        .optin-box {
+            background: var(--surface);
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 50px 35px;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+        .urgency-banner {
+            background: var(--warning);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+        .form-group { margin: 18px 0; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-primary); font-size: 1.05em; }
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1em;
+            background: var(--background);
+            color: var(--text-primary);
+        }
+        .form-group input:focus { outline: none; border-color: var(--accent-color); background: white; }
+        .guarantee { margin-top: 20px; padding: 15px; background: #c6f6d5; border-radius: 8px; color: var(--success); font-size: 0.95em; }
+        .zoom-schedule {
+            background: var(--background);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary-color);
+            text-align: left;
+        }
+        .zoom-schedule h4 { color: var(--primary-color); margin-bottom: 12px; font-size: 1.2em; }
+        .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+        .schedule-item { background: var(--surface); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); }
+        .schedule-item .time { font-weight: 600; color: var(--primary-color); font-size: 1.05em; }
+        .zoom-link-box {
+            background: var(--primary-color);
+            color: white;
+            padding: 18px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 18px 0;
+        }
+        .zoom-link-box a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            padding: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+        .thankyou { background: linear-gradient(135deg, #276749 0%, #38a169 100%); text-align: center; }
+        .thankyou-box {
+            background: var(--surface);
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 50px 35px;
+            border-radius: var(--radius);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+        }
+        .success-icon { font-size: 4em; color: var(--success); margin-bottom: 15px; }
+        .next-steps { background: var(--background); padding: 25px; border-radius: var(--radius); margin-top: 25px; text-align: left; }
+        .step-item { display: flex; align-items: start; margin: 18px 0; padding: 18px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border-color); }
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-size: 0.95em;
+        }
+        .footer { background: #2d3748; color: white; text-align: center; padding: 25px 20px; }
+        .footer a { color: #63b3ed; text-decoration: none; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; }
+        .modal-content { background: var(--surface); margin: 40px auto; padding: 35px; border-radius: var(--radius); max-width: 750px; color: var(--text-primary); }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 1.5em; background: none; border: none; cursor: pointer; color: var(--text-secondary); }
+        .progress-bar { position: fixed; top: 75px; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.3); z-index: 999; }
+        .progress-fill { height: 100%; background: #ffd700; width: 0%; transition: width 0.3s; }
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 1.8em; }
+            .cta-button { display: block; margin: 12px auto; max-width: 320px; }
+            .section { padding: 110px 15px 60px; }
+            .step-item { flex-direction: column; text-align: center; }
+            .step-number { margin: 0 auto 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header"><h1>🎯 ATOMY - Votre boutique gratuite en ligne</h1></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <!-- SECTION 1: Hero -->
+    <section class="section hero active" id="section1">
+        <div class="hero-content animate">
+            <h2>🚀 Obtenez Votre Boutique en Ligne ATOMY<span style="color: #ffd700;"> 100% GRATUITE</span></h2>
+            <div id="referrerDisplay" style="background: rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; margin: 20px 0; display: none;">
+                <p style="margin: 0; font-size: 1.1em;">👤 Recommandé par : <strong id="referrerName" style="color: #ffd700;"></strong></p>
+            </div>
+            <div class="highlight-box">
+                <h3>💎 Ce Que Vous Recevrez</h3>
+                <ul style="list-style: none; font-size: 1.1em; line-height: 2;">
+                    <li>✅ Accès au Webinaire (3 à 4 par jour) de Présentation en Direct</li>
+                    <li>✅ Inscription gratuite avec accompagnement personnalisé</li>
+                    <li>✅ Votre Boutique en Ligne à Votre Nom (après inscription)</li>
+                    <li>✅ Formation complète (À venir) + Outils et Accompagnement</li>
+                    <li>✅ Accès aux Produits de Qualité dans la boutique</li>
+                </ul>
+            </div>
+            <div style="margin: 30px 0;">
+                <button class="cta-button" onclick="goToSection(4)">👉 Je confirme ma participation au zoom</button>
+                <br>
+                <button class="cta-button cta-info" onclick="goToSection(2)">📖 PLUS D'INFOS SUR ATOMY</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: Benefits -->
+    <section class="section benefits" id="section2">
+        <div class="container">
+            <h2 class="section-title">Pourquoi ATOMY est l'opportunité <br>dont vous avez besoin !</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 30px 0;">
+                <div style="background: #fff7ed; padding: 30px; border-radius: var(--radius); border-left: 5px solid #ed8936;">
+                    <h3 style="color: #975a16; margin-bottom: 15px; font-size: 1.5em;">😓 Aujourd'hui ...</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">❌ Vos revenus ne vous suffisent plus</li>
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">❌ Les activités en ligne demandent souvent un investissement initial</li>
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">❌ Vous recherchez un complément de revenus grâce à une activité saine</li>
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">❌ Vous aimeriez léguer un héritage</li>
+                    </ul>
+                </div>
+                <div style="background: #c6f6d5; padding: 30px; border-radius: var(--radius); border-left: 5px solid #38a169;">
+                    <h3 style="color: var(--success); margin-bottom: 15px; font-size: 1.5em;">✨ Votre boutique ATOMY</h3>
+                    <ul style="list-style: none;">
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">✅ Inscription Gratuite</li>
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">✅ Accessibilité possible à l'indépendance financière</li>
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">✅ Développement mondial depuis 17 ans</li>
+                        <li style="padding: 8px 0; padding-left: 25px; position: relative;">✅ Héritage transmissible sur 3 générations</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card animate"><div class="benefit-icon">🎁</div><h3>Une boutique Gratuite</h3><p>Rien à vendre : une boutique Uniquement pour votre consommation personnelle.</p></div>
+                <div class="benefit-card animate"><div class="benefit-icon">💰</div><h3>Une révolution de la consommation</h3><p>Un retour de la richesse aux consommateurs.</p></div>
+                <div class="benefit-card animate"><div class="benefit-icon">🌍</div><h3>Mondiale</h3><p>Développez une communauté de consommateurs dans tous les pays du monde !</p></div>
+                <div class="benefit-card animate"><div class="benefit-icon">👨‍👩‍👧‍👦</div><h3>Héritage Familial</h3><p>Transmettez votre business à vos enfants et petits-enfants.</p></div>
+                <div class="benefit-card animate"><div class="benefit-icon">📚</div><h3>Formation Complète</h3><p>Accédez à un accompagnement personnalisé et à des formations gratuites</p></div>
+            </div>
+            <div style="text-align: center; margin: 50px 0;">
+                <button class="cta-button" onclick="goToSection(4)" style="font-size: 1.3em; padding: 22px 50px;">💎 Je rejoins ATOMY</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: Opt-in Form -->
+    <section class="section optin" id="section4">
+        <div class="optin-box animate">
+            <div class="urgency-banner">OUI ! Je confirme ma participation et je reçois le lien zoom</div>
+            <h2 style="font-size: 1.8em; color: var(--text-primary); margin-bottom: 15px;">Confirmez votre participation au Zoom ATOMY</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 25px; font-size: 1.05em;">Remplissez ce formulaire pour recevoir :<br>✅ Le lien Zoom pour la présentation en direct<br>✅ Votre inscription personnalisé après le zoom</p>
+            <div class="zoom-schedule">
+                <center><h4>📅 Horaires des zooms</h4></center>
+                <div class="schedule-grid">
+                    <div class="schedule-item"><div class="time">🇫🇷 Lundi au Vendredi : 17 h</div><div>France métropolitaine</div></div>
+                    <div class="schedule-item"><div class="time">🇫🇷 Mardi-Jeudi : 1 h du matin</div><div>France métropolitaine</div></div>
+                    <div class="schedule-item"><div class="time">🇫🇷 Lundi au Dimanche : 21 h</div><div>France métropolitaine</div></div>
+                    <div class="schedule-item"><div class="time">🇨🇦🇺🇸 Lundi-Mercredi : 19 h</div><div>Canada • USA • Antilles</div></div>
+                    <div class="schedule-item"><div class="time">🇫🇷 Samedi 16 h</div><div>France métropolitaine</div></div>
+                    <div class="schedule-item"><div class="time">🇬🇫 Lundi-Mercredi : 20 h</div><div>Guyane Française</div></div>
+                </div>
+                <div class="zoom-link-box">
+                    <small style="display: block; margin-top: 8px; opacity: 0.95;">💡 Conseil : Rejoignez 5 minutes avant le début<br><br>(Lien unique pour tous les zooms)</small>
+                </div>
+            </div>
+            <form id="leadForm" onsubmit="handleSubmit(event)">
+                <div class="form-group"><label for="prenom">Prénom *</label><input type="text" id="prenom" name="prenom" required placeholder="Votre prénom"></div>
+                <div class="form-group"><label for="nom">Nom *</label><input type="text" id="nom" name="nom" required placeholder="Votre nom"></div>
+                <div class="form-group"><label for="email">Email *</label><input type="email" id="email" name="email" required placeholder="votre@email.com"></div>
+                <div class="form-group"><label for="telephone">Téléphone (WhatsApp de préférence)</label><input type="tel" id="telephone" name="telephone" placeholder="+33 6 XX XX XX XX"></div>
+                <div class="form-group"><label for="pays">Pays de Résidence *</label><input type="text" id="pays" name="pays" required placeholder="Ex: France, Canada, Belgique..."></div>
+                <div class="form-group">
+                    <label for="parrain">👤 Indiquez la personne qui vous a invité(e) *</label>
+                    <input type="text" id="parrain" name="parrain" required placeholder="Ex: Laurent, Karine, Sophie...">
+                    <small style="color: var(--text-secondary); display: block; margin-top: 5px; font-size: 0.95em;">Ce champ est obligatoire pour valider votre inscription et être accompagné par la bonne personne.</small>
+                </div>
+                <div id="referrerInfo" style="background: #ebf8ff; border-left: 4px solid var(--accent-color); padding: 15px; margin: 18px 0; border-radius: 6px; display: none; text-align: left;">
+                    <strong style="color: var(--primary-color);">ℹ️ Information :</strong>
+                    <p style="margin: 8px 0 0 0; color: var(--text-primary);">Vous avez été recommandé(e) par <strong id="dynamicReferrer"></strong>. Le champ ci-dessus a été pré-rempli automatiquement.</p>
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%; margin: 25px 0;">🚀 OUI ! Je confirme ma participation <br>et je reçois le lien zoom</button>
+                <div class="guarantee"><strong>🔒 Vos Données Sont Protégées</strong><br>Conformément au RGPD, vos informations sont confidentielles et ne seront jamais partagées. Désinscription possible à tout moment.</div>
+            </form>
+            <div style="background: #bee3f8; border-left: 5px solid var(--accent-color); padding: 18px; border-radius: 8px; margin: 20px 0; text-align: left;">
+                <strong style="color: var(--primary-color); display: block; margin-bottom: 8px;">ℹ️ Comment ça fonctionne après l'inscription ?</strong>
+                <ol style="margin-left: 20px; color: var(--text-primary);">
+                    <li>Vous recevez un email de confirmation avec le lien Zoom et les horaires</li>
+                    <li>Vous assistez au zoom (possibilité de replay si absence de connexion)</li>
+                    <li>Après la présentation, nous répondrons à vos questions et finaliserons votre inscription ATOMY</li>
+                    <li>Votre boutique gratuite sera en ligne à votre nom !</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: Thank You -->
+    <section class="section thankyou" id="section5">
+        <div class="thankyou-box animate">
+            <div class="success-icon">✅</div>
+            <h2 style="font-size: 2em; color: var(--success); margin-bottom: 15px;">Merci <span id="userName">[Prénom]</span> !</h2>
+            <p style="font-size: 1.1em; margin-bottom: 25px;">Votre participation au zoom est confirmée. <strong><br>Vérifiez votre boîte email</strong> (et vos spams)<br></p>
+            <div class="next-steps">
+                <h3 style="color: var(--primary-color); margin-bottom: 18px; font-size: 1.3em;">📋 Dans cet email de confirmation, vous trouverez :</h3>
+                <div class="step-item"><div class="step-number">📧</div><div><h4 style="margin: 0 0 6px 0; color: var(--primary-color);">Le lien zoom</h4><p style="margin: 0; color: var(--text-secondary);">Avec tous les horaires adaptés à votre fuseau</p></div></div>
+                <div class="step-item"><div class="step-number">🎥</div><div><h4 style="margin: 0 0 6px 0; color: var(--primary-color);">Accès au Replay</h4><p style="margin: 0; color: var(--text-secondary);">Si vous n'avez pas de connexion zoom, un accès à un replay vous sera proposé</p></div></div>
+                <div class="step-item"><div class="step-number">👤</div><div><h4 style="margin: 0 0 6px 0; color: var(--primary-color);">Contact de Votre Sponsor</h4><p style="margin: 0; color: var(--text-secondary);">Après le zoom, votre Sponsor vous recontactera pour répondre à vos questions et vous proposez une inscription à votre boutique gratuite en ligne</p><p style="margin-top: 10px; font-weight: 600; color: var(--primary-color);">📞 WhatsApp : <a href="https://wa.me/33680244077" style="color: var(--success);">+33 6 80 24 40 77</a><br>📧 Email : maviservices20@gmail.com</p></div></div>
+            </div>
+            <div style="margin-top: 25px; text-align: center;">
+                <a href="https://us07web.zoom.us/j/4621046155" target="_blank" class="cta-button" style="padding: 14px 35px; font-size: 1.1em;">📹 Accéder au Zoom Maintenant</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2026 Laurent - BEN MANAGER</p>
+        <p style="margin-top: 10px; font-size: 0.95em;">
+            <a href="#" onclick="showModal('mentions'); return false;">Mentions Légales</a> | 
+            <a href="#" onclick="showModal('confidentialite'); return false;">Politique de Confidentialité</a> | 
+            <a href="#" onclick="showModal('cgu'); return false;">Conditions d'Utilisation</a>
+        </p>
+        <p style="margin-top: 10px; font-size: 0.85em; opacity: 0.9;">ATOMY est une marque déposée. Ce site n'est pas affilié à Facebook ou Meta Platforms Inc.</p>
+    </div>
+
+    <!-- Modals -->
+    <div id="legalModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // ========== MEMBERS DATABASE ==========
+        const membersData = {
+            'laurent': { name: 'Laurent - BEN MANAGER', email: 'maviservices20@gmail.com', whatsapp: '+33680244077', zoom: 'https://us07web.zoom.us/j/4621046155' },
+            'arsene': { name: 'Arsene Ngoran', email: 'kouassidechrist83@gmail.com', whatsapp: '+2250712466383', zoom: 'https://us07web.zoom.us/j/4621046155' },
+            'alain': { name: 'Alain Malessan', email: 'harmonienaturae@gmail.com', whatsapp: '+33677835721', zoom: 'https://us07web.zoom.us/j/4621046155' },
+            'karine': { name: 'SUCCESS - ATOMY', email: 'originesource69@gmail.com', whatsapp: '+33613704730', zoom: 'https://us07web.zoom.us/j/4621046155' }
+        };
+
+        // ========== NAVIGATION ==========
+        function goToSection(sectionNumber) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById('section' + sectionNumber);
+            if (target) {
+                target.classList.add('active');
+                document.getElementById('progressFill').style.width = (sectionNumber / 5 * 100) + '%';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // ========== REFERRER HANDLING ==========
+        function handleReferrer() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrerFromURL = urlParams.get('parrain');
+            if (referrerFromURL && membersData[referrerFromURL.toLowerCase()]) {
+                const member = membersData[referrerFromURL.toLowerCase()];
+                document.getElementById('referrerName').textContent = member.name;
+                document.getElementById('referrerDisplay').style.display = 'block';
+                document.getElementById('parrain').value = member.name;
+                document.getElementById('parrain').readOnly = true;
+                document.getElementById('dynamicReferrer').textContent = member.name;
+                document.getElementById('referrerInfo').style.display = 'block';
+            }
+        }
+
+        // ========== FORM HANDLING ==========
+        function handleSubmit(e) {
+    e.preventDefault();
+    
+    const prenom = document.getElementById('prenom').value;
+    const nom = document.getElementById('nom').value;
+    const email = document.getElementById('email').value;
+    const telephone = document.getElementById('telephone').value;
+    const pays = document.getElementById('pays').value;
+    const parrain = document.getElementById('parrain').value;
+    
+    // Désactiver le bouton
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi en cours...";
+    }
+    
+    // Données à envoyer au proxy
+    const formData = {
+        nom: prenom + ' ' + nom,
+        email: email,
+        telephone: telephone,
+        message: `Nouvelle inscription ATOMY\n\nNom: ${nom}\nPrénom: ${prenom}\nPays: ${pays}\nParrain: ${parrain}`,
+        source: 'Tunnel ATOMY - Standard'
+    };
+    
+    // Envoyer au proxy Render
+    fetch('https://atomy-brevo-proxy.onrender.com/api/atomy-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            // Succès
+            document.getElementById('userName').textContent = prenom;
+            goToSection(5);
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Envoyer";
+            }
+        } else {
+            throw new Error(result.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Envoyer";
+        }
+    });
+}
+        // ========== MODALS ==========
+        const legalContent = {
+            mentions: `<h3 style="color:var(--primary-color); margin-bottom:15px;">Mentions Légales</h3><p><strong>Éditeur :</strong> Laurent - Partenaire Indépendant ATOMY</p><p><strong>Contact :</strong> maviservices20@gmail.com</p><p><strong>Hébergement :</strong> Netlify, Inc.<br>Adresse : 44 Montgomery St, Suite 300, San Francisco, CA 94104, USA<br>Site : https://www.netlify.com</p><p><strong>Responsable publication :</strong> Laurent</p><p style="margin-top:15px;"><strong>À propos d'ATOMY :</strong> Ce site est géré par un partenaire indépendant de la société ATOMY. ATOMY est une marque déposée.</p>`,
+            confidentialite: `<h3 style="color:var(--primary-color); margin-bottom:15px;">Politique de Confidentialité</h3><p><strong>1. Collecte :</strong> Nous collectons uniquement les informations que vous nous fournissez volontairement.</p><p><strong>2. Utilisation :</strong> Vos données servent uniquement à vous envoyer les infos du webinaire et vous accompagner.</p><p><strong>3. Partage :</strong> Vos données ne sont JAMAIS vendues ni partagées avec des tiers.</p><p><strong>4. Conservation :</strong> 24 mois maximum.</p><p><strong>5. Vos droits (RGPD) :</strong> Accès, rectification, suppression. Contact : maviservices20@gmail.com</p>`,
+            cgu: `<h3 style="color:var(--primary-color); margin-bottom:15px;">Conditions d'Utilisation</h3><p><strong>1. Objet :</strong> Présenter l'opportunité ATOMY.</p><p><strong>2. Gratuité :</strong> Accès 100% gratuit. Aucun paiement demandé.</p><p><strong>3. Inscription ATOMY :</strong> Soumise à validation par ATOMY.</p><p><strong>4. Revenus :</strong> Non garantis, dépendent de l'engagement personnel.</p><p><strong>5. Propriété intellectuelle :</strong> ATOMY est une marque déposée.</p>`
+        };
+
+        function showModal(type) {
+            document.getElementById('modalContent').innerHTML = legalContent[type];
+            document.getElementById('legalModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('legalModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        document.getElementById('legalModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+        // ========== INIT ==========
+        window.addEventListener('load', () => {
+            handleReferrer();
+            document.querySelectorAll('.animate').forEach((el, index) => { el.style.animationDelay = (index * 0.15) + 's'; });
+        });
+    </script>
+</body>
+</html>

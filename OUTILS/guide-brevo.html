@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📧 Guide Complet Brevo - De la création à l'automatisation</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --primary-light: #4a5568;
+            --accent-color: #3182ce;
+            --background: #f7fafc;
+            --surface: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-on-primary: #ffffff;
+            --success: #276749;
+            --warning: #975a16;
+            --border-color: #e2e8f0;
+            --font-base: 18px;
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: var(--font-base);
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: var(--primary-color);
+            color: var(--text-on-primary);
+            padding: 30px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.8em; margin-bottom: 10px; font-weight: 700; }
+        .header p { opacity: 0.95; font-size: 1.1em; }
+        .step-card {
+            background: var(--background);
+            border-left: 5px solid var(--primary-color);
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .step-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        .step-card ol { margin-left: 25px; margin-top: 10px; }
+        .step-card li { margin: 12px 0; }
+        .step-card a { color: var(--accent-color); font-weight: 600; text-decoration: none; }
+        .step-card a:hover { text-decoration: underline; }
+        .step-card code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .screenshot {
+            background: #edf2f7;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(49, 130, 206, 0.4); }
+        .btn-print { background: var(--primary-light); }
+        .btn-success { background: var(--success); }
+        .info-box {
+            background: #ebf8ff;
+            border-left: 5px solid var(--accent-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-box strong { color: var(--primary-color); display: block; margin-bottom: 10px; font-weight: 600; }
+        .warning-box {
+            background: #fff7ed;
+            border-left: 5px solid #ed8936;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: var(--warning);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+        @media print { .btn { display: none; } body { background: white; } .container { box-shadow: none; } }
+        @media (max-width: 768px) { .container { padding: 25px; } .header h1 { font-size: 1.5em; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 Guide Complet Brevo</h1>
+            <p>De la création du compte à l'automatisation des emails</p>
+            <button onclick="window.print()" class="btn btn-print" style="margin-top: 15px;">🖨️ Imprimer / PDF</button>
+            <a href="../support.html" class="btn" style="background: white; color: var(--primary-color); margin-top: 10px;">← Retour au Support</a>
+        </div>
+
+        <div class="info-box">
+            <strong>⏱️ Temps estimé :</strong> 25-35 minutes<br>
+            <strong>💰 Coût :</strong> Gratuit jusqu'à 300 emails/jour<br>
+            <strong>📋 Pré-requis :</strong> Une adresse email valide + ton site Netlify prêt
+        </div>
+
+        <div class="step-card">
+            <h3>📝 Étape 1 : Créer ton compte Brevo</h3>
+            <ol>
+                <li>Ouvre ton navigateur et va sur : <a href="https://www.brevo.com" target="_blank">www.brevo.com</a></li>
+                <li>Clique sur le bouton <strong>"Créer un compte"</strong> (en haut à droite)</li>
+                <li>Choisis <strong>"Je veux envoyer des emails"</strong></li>
+                <li>Remplis le formulaire :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Prénom</strong> : Ton prénom</li>
+                        <li><strong>Nom</strong> : Ton nom</li>
+                        <li><strong>Email professionnel</strong> : Ton email (ex: karine@email.com)</li>
+                        <li><strong>Mot de passe</strong> : Un mot de passe fort (12+ caractères)</li>
+                        <li><strong>Téléphone</strong> : Ton numéro avec indicatif (ex: +33612345678)</li>
+                        <li><strong>Pays</strong> : Ton pays de résidence</li>
+                    </ul>
+                </li>
+                <li>Coche la case pour accepter les conditions</li>
+                <li>Clique sur <strong>"Créer mon compte"</strong></li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>✅ Étape 2 : Vérifier ton email</h3>
+            <ol>
+                <li>Ouvre ta boîte email</li>
+                <li>Trouve l'email de Brevo (objet : "Vérifiez votre adresse email")</li>
+                <li>Clique sur le bouton <strong>"Vérifier mon email"</strong> dans l'email</li>
+                <li>✅ Ton compte est maintenant activé !</li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>🔑 Étape 3 : Trouver ta clé API (ESSENTIEL)</h3>
+            <p style="margin-bottom: 15px;"><strong>⚠️ Cette étape est cruciale :</strong> Ta clé API permet à ton site de communiquer avec Brevo.</p>
+            <ol>
+                <li>Connecte-toi sur <a href="https://app.brevo.com" target="_blank">app.brevo.com</a></li>
+                <li>Dans le menu gauche, clique sur <strong>"Paramètres"</strong> (icône roue crantée ⚙️)</li>
+                <li>Dans le sous-menu, clique sur <strong>"Clés API"</strong></li>
+                <li>Clique sur <strong>"Générer une nouvelle clé API"</strong></li>
+                <li>Donne un nom à ta clé (ex: <code>Tunnel ATOMY - Karine</code>)</li>
+                <li>Clique sur <strong>"Générer"</strong></li>
+                <li>✅ Ta clé apparaît : elle commence par <code>xkeysib-</code></li>
+                <li><strong>COPIE-LA IMMÉDIATEMENT</strong> et colle-la dans un endroit sûr (Bloc-notes, gestionnaire de mots de passe...)</li>
+            </ol>
+            <div class="warning-box">
+                <strong>⚠️ Attention :</strong><br>
+                • Cette clé est comme un mot de passe : ne la partage jamais !<br>
+                • Une fois générée, tu ne pourras plus la revoir dans Brevo (seulement la recréer)<br>
+                • Si tu la perds, tu devras en générer une nouvelle et mettre à jour ton code
+            </div>
+            <div style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: monospace; overflow-x: auto;">
+                xkeysib-a7972d18d1eefe6a142f3c410aa......................................-XXXXXX
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>📋 Étape 4 : Créer ta liste de contacts</h3>
+            <ol>
+                <li>Dans Brevo, menu gauche → <strong>"Contacts"</strong> → <strong>"Listes"</strong></li>
+                <li>Clique sur <strong>"Créer une liste"</strong></li>
+                <li>Remplis :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Nom de la liste</strong> : <code>Leads ATOMY - Karine</code></li>
+                        <li><strong>Description</strong> : <code>Prospects du tunnel ATOMY de Karine</code></li>
+                    </ul>
+                </li>
+                <li>Clique sur <strong>"Créer"</strong></li>
+                <li>✅ Note l'<strong>ID de la liste</strong> (un nombre, ex: <code>2</code>) → Tu en auras besoin dans ton code</li>
+            </ol>
+            <div class="screenshot">
+                📋 [Page Listes Brevo]<br>
+                Note l'ID de ta liste (ex: 2)
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🏷️ Étape 5 : Créer tes attributs personnalisés</h3>
+            <p style="margin-bottom: 15px;"><strong>⚠️ Important :</strong> Ces attributs doivent être créés AVANT d'envoyer des données depuis ton site.</p>
+            <ol>
+                <li>Dans Brevo, menu gauche → <strong>"Contacts"</strong> → <strong>"Paramètres"</strong> (roue crantée ⚙️)</li>
+                <li>Clique sur <strong>"Attributs des contacts"</strong></li>
+                <li>Pour CHAQUE attribut ci-dessous, clique sur <strong>"Créer un attribut"</strong> et remplis :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Nom interne</strong> : <code>PRENOM</code> (en MAJUSCULES, sans espaces)</li>
+                        <li><strong>Type</strong> : <code>Texte</code></li>
+                        <li><strong>Description</strong> : <code>Prénom du contact</code></li>
+                        <li>Clique sur <strong>"Créer"</strong></li>
+                    </ul>
+                </li>
+            </ol>
+            <p style="margin: 15px 0;"><strong>📋 Liste des attributs à créer :</strong></p>
+            <div style="background: #edf2f7; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace;">
+                PRENOM (Texte)<br>
+                NOM (Texte)<br>
+                TELEPHONE (Texte)<br>
+                PAYS (Texte)<br>
+                OBJECTIF (Texte)<br>
+                PARRAIN (Texte) ← Pour tracker qui amène les leads<br>
+                SOURCE (Texte) ← Pour savoir d'où vient le lead<br>
+                DATE_INSCRIPTION (Texte) ← Optionnel, Brevo le fait auto
+            </div>
+            <div class="info-box">
+                <strong>💡 Astuce :</strong><br>
+                Les noms d'attributs doivent correspondre EXACTEMENT à ceux dans ton code JavaScript (majuscules, pas d'espaces).
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>📧 Étape 6 : Créer ton template d'email</h3>
+            <ol>
+                <li>Dans Brevo, menu gauche → <strong>"Campagnes"</strong> → <strong>"Templates"</strong></li>
+                <li>Clique sur <strong>"Créer un template"</strong> → <strong>"Template d'email"</strong></li>
+                <li>Remplis les infos de base :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li><strong>Email de l'expéditeur</strong> : Ton email (ex: karine@email.com)</li>
+                        <li><strong>Nom de l'expéditeur</strong> : <code>Karine - ATOMY</code></li>
+                        <li><strong>Objet</strong> : <code>✅ Votre réservation ATOMY est confirmée !</code></li>
+                        <li><strong>Aperçu du texte</strong> : <code>Votre place au webinaire est réservée...</code></li>
+                    </ul>
+                </li>
+                <li>Clique sur <strong>"Ajouter du contenu"</strong></li>
+                <li>Choisis <strong>"Éditeur HTML personnalisé"</strong> (ou "Code HTML")</li>
+                <li>Colle le code HTML de ton email de confirmation (fourni par Laurent)</li>
+                <li>Clique sur <strong>"Enregistrer et quitter"</strong></li>
+                <li>✅ Note l'<strong>ID du template</strong> (un nombre, ex: <code>3</code>) → Tu en auras besoin dans ton code</li>
+            </ol>
+            <div class="screenshot">
+                📧 [Éditeur HTML Brevo]<br>
+                Colle ton code HTML d'email ici
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🔄 Étape 7 : Créer ton automatisation</h3>
+            <ol>
+                <li>Dans Brevo, menu gauche → <strong>"Automatisations"</strong></li>
+                <li>Clique sur <strong>"Créer un workflow"</strong></li>
+                <li>Choisis : <strong>"Déclencheur : Contact ajouté à une liste"</strong></li>
+                <li>Sélectionne ta liste : <code>Leads ATOMY - Karine</code></li>
+                <li>Clique sur <strong>"Suivant"</strong></li>
+                <li>Clique sur <strong>"Ajouter une action"</strong></li>
+                <li>Choisis : <strong>"Envoyer un email"</strong></li>
+                <li>Sélectionne ton template : <code>Confirmation Webinaire ATOMY</code></li>
+                <li>Clique sur <strong>"Enregistrer"</strong></li>
+                <li>✅ Active le workflow (bouton en haut à droite → "Actif")</li>
+            </ol>
+            <div class="info-box">
+                <strong>💡 Test rapide :</strong><br>
+                Ajoute manuellement un contact de test à ta liste Brevo → Vérifie que l'email automatique part bien.
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🔗 Étape 8 : Mettre à jour ton code index.html</h3>
+            <p style="margin-bottom: 15px;"><strong>⚠️ Cette étape relie ton site à Brevo :</strong></p>
+            <ol>
+                <li>Ouvre ton fichier <code>index.html</code> dans un éditeur de texte</li>
+                <li>Cherche la fonction <code>handleSubmit()</code> (vers la ligne ~900)</li>
+                <li>Remplace la clé API :
+                    <div style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace; overflow-x: auto;">
+                        'api-key': 'xkeysib-a7972d18d1eefe6a142f3c41xxxx...............'  ← Remplace par TA clé
+                    </div>
+                </li>
+                <li>Vérifie que <code>listIds: [2]</code> correspond à l'ID de TA liste Brevo</li>
+                <li>Vérifie que <code>templateId: 3</code> correspond à l'ID de TON template</li>
+                <li>Enregistre le fichier</li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>✅ Étape 9 : Tester l'intégration complète</h3>
+            <ol>
+                <li>Déploie ton site mis à jour sur Netlify</li>
+                <li>Ouvre ton site : <code>https://karine-atomy.netlify.app/?parrain=karine</code></li>
+                <li>Remplis le formulaire avec un email de test</li>
+                <li>Soumets le formulaire</li>
+                <li>Vérifie dans Brevo :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>✅ Le contact apparaît dans ta liste "Leads ATOMY - Karine"</li>
+                        <li>✅ L'attribut <code>PARRAIN</code> est bien rempli avec "Karine"</li>
+                        <li>✅ Les autres attributs (PRENOM, EMAIL, etc.) sont corrects</li>
+                    </ul>
+                </li>
+                <li>Vérifie dans ta boîte email :
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>✅ Tu reçois l'email de confirmation automatique</li>
+                        <li>✅ Le template est bien celui que tu as créé</li>
+                        <li>✅ Les variables ({{params.PRENOM}}) sont bien remplacées</li>
+                    </ul>
+                </li>
+                <li>✅ Tout fonctionne ? Ton système est prêt !</li>
+            </ol>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ Problèmes fréquents et solutions :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>"Erreur 401 / Unauthorized"</strong> → Ta clé API est incorrecte ou expirée → Recrée-la dans Paramètres → Clés API</li>
+                <li><strong>"Erreur 400 / Bad Request"</strong> → Un attribut n'existe pas dans Brevo → Crée-le dans Paramètres → Attributs</li>
+                <li><strong>L'email ne part pas</strong> → Vérifie que l'automatisation est "Active" et que le template existe</li>
+                <li><strong>Le contact n'apparaît pas</strong> → Attends 1-2 minutes (Brevo peut être lent) ou rafraîchis la page</li>
+                <li><strong>Les variables {{params.PRENOM}} ne sont pas remplacées</strong> → Vérifie que les noms dans <code>params: {}</code> correspondent aux attributs Brevo</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>🔗 Liens utiles :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><a href="https://app.brevo.com" target="_blank">Dashboard Brevo</a></li>
+                <li><a href="https://help.brevo.com" target="_blank">Centre d'aide Brevo</a></li>
+                <li><a href="https://developers.brevo.com" target="_blank">Documentation API Brevo</a></li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">📞 Besoin d'aide ?</h3>
+            <a href="https://wa.me/33680244077?text=Salut%20Laurent%2C%20j'ai%20un%20problème%20avec%20Brevo%20!" target="_blank" class="btn btn-success">Contacter Laurent sur WhatsApp</a>
+            <a href="guide-netlify.html" class="btn">← Voir le guide Netlify</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>© 2026 Laurent - BEN MANAGER</strong></p>
+            <p>Partenaire Indépendant ATOMY</p>
+            <p style="margin-top: 10px;">
+                📧 maviservices20@gmail.com | 📱 +33 6 80 24 40 77
+            </p>
+        </div>
+    </div>
+</body>
+</html>

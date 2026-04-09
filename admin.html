@@ -1,0 +1,464 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Admin ATOMY - Gestion des Membres</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #0066cc;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #0066cc;
+        }
+        .form-group {
+            margin: 20px 0;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-success { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .members-list { margin: 30px 0; }
+        .member-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .member-info h4 { color: #0066cc; margin-bottom: 5px; }
+        .member-info p { color: #666; font-size: 0.9em; margin: 3px 0; }
+        .member-actions { display: flex; gap: 10px; }
+        .output-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+        .output-section h3 { color: #0066cc; margin-bottom: 15px; }
+        .code-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9em;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card .number { font-size: 2em; font-weight: bold; }
+        .hidden { display: none; }
+        
+        /* LOGIN SCREEN STYLES */
+        #loginScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        #loginBox {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+        #loginBox h2 { color: #0066cc; margin-bottom: 20px; }
+        #loginBox input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        #loginBox button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        #loginBox button:hover { transform: translateY(-2px); }
+        #errorMsg { color: #dc3545; margin-top: 10px; display: none; }
+        
+        @media (max-width: 768px) {
+            .member-card { flex-direction: column; text-align: center; }
+            .member-actions { margin-top: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div id="loginBox">
+            <h2>🔐 Accès Réservé</h2>
+            <p style="color: #666; margin-bottom: 20px;">Admin ATOMY - Gestion des membres</p>
+            <input type="password" id="adminPwd" placeholder="Mot de passe">
+            <button onclick="checkPassword()">Accéder</button>
+            <p id="errorMsg">❌ Mot de passe incorrect</p>
+            <p style="margin-top: 20px; font-size: 0.85em; color: #999;">
+                💡 Contacte Laurent pour obtenir le mot de passe
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT (hidden until login) -->
+    <div id="mainContent" class="hidden">
+        <div class="container">
+            <h1>🎯 Admin ATOMY</h1>
+            <p style="text-align: center; color: #666; margin-bottom: 30px;">
+                Gestion des membres et génération du code pour ton tunnel
+            </p>
+
+            <!-- Stats -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="number" id="totalMembers">0</div>
+                    <div>Membres</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">🚀</div>
+                    <div>Prêt à exporter</div>
+                </div>
+            </div>
+
+            <!-- Formulaire d'ajout -->
+            <div class="form-section">
+                <h3 style="color: #0066cc; margin: 20px 0 15px;">➕ Ajouter un membre</h3>
+                
+                <div class="form-group">
+                    <label for="memberKey">Clé unique (minuscules, sans espaces) *</label>
+                    <input type="text" id="memberKey" placeholder="ex: laurent, sophie, marc..." required>
+                    <small style="color: #666;">C'est ce qui sera dans l'URL : ?parrain=<strong>clé</strong></small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberName">Nom affiché *</label>
+                    <input type="text" id="memberName" placeholder="ex: Laurent - BEN MANAGER" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberEmail">Email *</label>
+                    <input type="email" id="memberEmail" placeholder="email@domaine.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberWhatsapp">WhatsApp (avec +) *</label>
+                    <input type="text" id="memberWhatsapp" placeholder="+33612345678" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="memberZoom">Lien Zoom</label>
+                    <input type="url" id="memberZoom" placeholder="https://us07web.zoom.us/j/123456">
+                </div>
+                
+                <button class="btn btn-primary" onclick="addMember()">💾 Ajouter le membre</button>
+                <button class="btn btn-warning" onclick="resetForm()">🔄 Réinitialiser</button>
+            </div>
+
+            <!-- Liste des membres -->
+            <div class="members-list">
+                <h3 style="color: #0066cc; margin: 30px 0 15px;">👥 Membres enregistrés</h3>
+                <div id="membersContainer"></div>
+                <p id="noMembers" style="text-align: center; color: #666; padding: 20px;">
+                    Aucun membre enregistré pour le moment.
+                </p>
+            </div>
+
+            <!-- Section Export -->
+            <div class="output-section">
+                <h3>📤 Exporter / Générer</h3>
+                
+                <div style="margin: 15px 0;">
+                    <button class="btn btn-success" onclick="generateCode()">🔧 Générer le code JavaScript</button>
+                    <button class="btn btn-primary" onclick="downloadJSON()">📥 Télécharger membres.json</button>
+                    <button class="btn btn-warning" onclick="exportExcel()">📊 Exporter Excel/CSV</button>
+                    <button class="btn btn-danger" onclick="copyCode()">📋 Copier le code</button>
+                </div>
+                
+                <div id="codeOutput" class="hidden">
+                    <h4 style="color: #0066cc; margin: 15px 0;">Code JavaScript généré :</h4>
+                    <div class="code-box" id="codeBox"></div>
+                    <p style="font-size: 0.9em; color: #666;">
+                        💡 Copie ce code et remplace la variable <code>membersData</code> dans ton fichier <code>index.html</code>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="output-section">
+                <h3>📖 Mode d'emploi rapide</h3>
+                <ol style="margin-left: 20px; color: #333; line-height: 1.8;">
+                    <li>Ajoute tes membres avec le formulaire ci-dessus</li>
+                    <li>Clique sur "Générer le code JavaScript"</li>
+                    <li>Copie le code généré</li>
+                    <li>Dans ton <code>index.html</code>, remplace la variable <code>membersData</code> par ce code</li>
+                    <li>Déploie sur Netlify</li>
+                    <li>Partage les liens : <code>https://tonsite.netlify.app/?parrain=cle</code></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== PASSWORD PROTECTION ==========
+        // ⚠️ CHANGE THIS PASSWORD to something secure!
+        const ADMIN_PASSWORD = 'ATOMY2026_63@-Laurent-Secure!';
+        
+        function checkPassword() {
+            const input = document.getElementById('adminPwd').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (input === ADMIN_PASSWORD) {
+                // Save access in localStorage (not secure but convenient)
+                localStorage.setItem('adminAccess', 'true');
+                localStorage.setItem('adminAccessTime', Date.now());
+                
+                // Show main content
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainContent').classList.remove('hidden');
+                
+                // Initialize
+                renderMembers();
+                updateStats();
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('adminPwd').value = '';
+            }
+        }
+        
+        // Check if already logged in (session lasts 24h)
+        window.addEventListener('load', () => {
+            const access = localStorage.getItem('adminAccess');
+            const accessTime = localStorage.getItem('adminAccessTime');
+            const now = Date.now();
+            const oneDay = 24 * 60 * 60 * 1000;
+            
+            if (access === 'true' && accessTime && (now - accessTime) < oneDay) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainContent').classList.remove('hidden');
+                renderMembers();
+                updateStats();
+            }
+        });
+        
+        // ========== GESTION DES MEMBRES ==========
+        let members = JSON.parse(localStorage.getItem('atomyMembers')) || {};
+
+        function addMember() {
+            const key = document.getElementById('memberKey').value.trim().toLowerCase();
+            const name = document.getElementById('memberName').value.trim();
+            const email = document.getElementById('memberEmail').value.trim();
+            const whatsapp = document.getElementById('memberWhatsapp').value.trim();
+            const zoom = document.getElementById('memberZoom').value.trim();
+
+            if (!key || !name || !email || !whatsapp) {
+                alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+                return;
+            }
+
+            if (!/^[a-z0-9_-]+$/.test(key)) {
+                alert('⚠️ La clé doit contenir uniquement des minuscules, chiffres, tirets ou underscores');
+                return;
+            }
+
+            members[key] = { name, email, whatsapp, zoom };
+            saveMembers();
+            renderMembers();
+            updateStats();
+            resetForm();
+            alert(`✅ Membre "${name}" ajouté avec la clé "${key}"`);
+        }
+
+        function deleteMember(key) {
+            if (confirm(`Supprimer "${members[key].name}" ?`)) {
+                delete members[key];
+                saveMembers();
+                renderMembers();
+                updateStats();
+                alert('✅ Membre supprimé');
+            }
+        }
+
+        function editMember(key) {
+            const member = members[key];
+            document.getElementById('memberKey').value = key;
+            document.getElementById('memberKey').disabled = true;
+            document.getElementById('memberName').value = member.name;
+            document.getElementById('memberEmail').value = member.email;
+            document.getElementById('memberWhatsapp').value = member.whatsapp;
+            document.getElementById('memberZoom').value = member.zoom || '';
+            document.getElementById('memberKey').focus();
+        }
+
+        function saveMembers() {
+            localStorage.setItem('atomyMembers', JSON.stringify(members));
+        }
+
+        function renderMembers() {
+            const container = document.getElementById('membersContainer');
+            const noMembers = document.getElementById('noMembers');
+            
+            if (Object.keys(members).length === 0) {
+                container.innerHTML = '';
+                noMembers.style.display = 'block';
+                return;
+            }
+            
+            noMembers.style.display = 'none';
+            container.innerHTML = Object.entries(members).map(([key, member]) => `
+                <div class="member-card">
+                    <div class="member-info">
+                        <h4>${member.name}</h4>
+                        <p>🔑 Clé: <strong>${key}</strong></p>
+                        <p>📧 ${member.email}</p>
+                        <p>📱 ${member.whatsapp}</p>
+                        ${member.zoom ? `<p>🎥 <a href="${member.zoom}" target="_blank">Lien Zoom</a></p>` : ''}
+                        <p style="margin-top: 10px; font-size: 0.85em; color: #999;">
+                            Lien: <code>https://tonsite.netlify.app/?parrain=${key}</code>
+                        </p>
+                    </div>
+                    <div class="member-actions">
+                        <button class="btn btn-primary" onclick="editMember('${key}')" style="padding: 8px 15px; font-size: 0.9em;">✏️</button>
+                        <button class="btn btn-danger" onclick="deleteMember('${key}')" style="padding: 8px 15px; font-size: 0.9em;">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalMembers').textContent = Object.keys(members).length;
+        }
+
+        function resetForm() {
+            document.getElementById('memberKey').disabled = false;
+            document.getElementById('memberKey').value = '';
+            document.getElementById('memberName').value = '';
+            document.getElementById('memberEmail').value = '';
+            document.getElementById('memberWhatsapp').value = '';
+            document.getElementById('memberZoom').value = '';
+        }
+
+        function generateCode() {
+            const code = `const membersData = ${JSON.stringify(members, null, 4)};`;
+            document.getElementById('codeBox').textContent = code;
+            document.getElementById('codeOutput').classList.remove('hidden');
+            document.getElementById('codeOutput').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyCode() {
+            const code = document.getElementById('codeBox').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ Code copié dans le presse-papiers !');
+            });
+        }
+
+        function downloadJSON() {
+            const data = JSON.stringify(members, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'membres.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Fichier membres.json téléchargé !');
+        }
+
+        function exportExcel() {
+            if (Object.keys(members).length === 0) {
+                alert('⚠️ Aucun membre à exporter');
+                return;
+            }
+            
+            let csv = 'Clé,Nom,Email,WhatsApp,Zoom,Lien Personnalisé\n';
+            Object.entries(members).forEach(([key, member]) => {
+                const lien = `https://tonsite.netlify.app/?parrain=${key}`;
+                csv += `"${key}","${member.name}","${member.email}","${member.whatsapp}","${member.zoom || ''}","${lien}"\n`;
+            });
+            
+            const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'membres-atomy.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('✅ Fichier CSV téléchargé (ouvrable dans Excel) !');
+        }
+    </script>
+</body>
+</html>

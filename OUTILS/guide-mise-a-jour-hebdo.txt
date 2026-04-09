@@ -1,0 +1,58 @@
+🔄 GUIDE : Mise à jour hebdomadaire de la base de données
+
+📅 CHAQUE JEUDI après le Zoom FAQ :
+
+1️⃣ Regarder/revoir le Zoom et noter :
+   • Nouvelle pathologie abordée
+   • Produits recommandés
+   • Posologies précises
+   • Précautions mentionnées
+   • Conseils complémentaires
+
+2️⃣ Ajouter dans `pathologies.json` :
+   - Copier le template ci-dessous
+   - Remplacer les [...] par les infos réelles
+   - Ajouter en fin de tableau "pathologies"
+   - Incrémenter l'ID (ex: "nouvelle-pathologie")
+
+3️⃣ Mettre à jour `base-donnees-pathologies.html` :
+   - Ajouter la nouvelle fiche dans le tableau JavaScript `pathologies`
+   - Mettre à jour la date dans le footer
+
+4️⃣ Redéployer sur Netlify
+
+─────────────────────────────────────────────
+
+📋 TEMPLATE NOUVELLE FICHE (à copier dans JSON) :
+
+{
+  "id": "nom-pathologie",
+  "title": "Titre de la pathologie",
+  "category": "douleurs|hormonal|immunite|digestif|peau|fertilite|cancer",
+  "summary": "Résumé en 1 phrase",
+  "products": [
+    {
+      "name": "Nom du produit",
+      "link": "https://eu.atomy.com/main",
+      "note": "Note optionnelle"
+    }
+  ],
+  "dosage": "• Produit : posologie\n• Produit : posologie",
+  "warnings": "⚠️ Précaution 1\n⚠️ Précaution 2",
+  "tips": "✅ Conseil 1\n✅ Conseil 2",
+  "source": "Zoom FAQ - Marie-José, [DATE]"
+}
+
+─────────────────────────────────────────────
+
+✅ CHECKLIST AVANT PUBLICATION :
+□ Posologies vérifiées
+□ Liens produits testés
+⚠️ Précautions bien visibles
+□ Date mise à jour
+□ Test de recherche/filtres
+□ Redéploiement Netlify réussi
+
+─────────────────────────────────────────────
+
+💡 ASTUCE : Garder une copie locale du JSON pour sauvegarde.

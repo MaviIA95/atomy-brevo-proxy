@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>🎨 Guide : Modifier les Couleurs</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7fafc; color: #1a202c; line-height: 1.7; padding: 20px; font-size: 18px; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c5282; margin-bottom: 20px; }
+        h2 { color: #2c5282; margin: 25px 0 15px; }
+        code { background: #edf2f7; padding: 3px 8px; border-radius: 4px; font-family: monospace; }
+        .color-example { display: inline-block; width: 30px; height: 30px; border-radius: 4px; margin-right: 10px; vertical-align: middle; border: 1px solid #ccc; }
+        .btn { display: inline-block; background: #3182ce; color: white; padding: 10px 25px; text-decoration: none; border-radius: 25px; margin: 10px 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Guide : Modifier les Couleurs</h1>
+        <p>Personnalise facilement les couleurs de ton site ATOMY.</p>
+        
+        <h2>📍 Où modifier les couleurs ?</h2>
+        <p>Ouvre ton fichier <code>index.html</code> ou <code>support.html</code> dans un éditeur de texte (Bloc-notes, NotePade++, VS Code...).</p>
+        <p>Cherche cette section tout en haut du CSS :</p>
+        
+        <pre style="background: #1e1e1e; color: #d4d4d4; padding: 15px; border-radius: 8px; overflow-x: auto;">
+:root {
+    --primary-color: #2c5282;        /* Bleu principal */
+    --primary-light: #4a5568;        /* Bleu secondaire */
+    --accent-color: #3182ce;         /* Bleu accent */
+    --background: #f7fafc;           /* Fond de page */
+    --surface: #ffffff;              /* Surfaces (cartes) */
+    --text-primary: #1a202c;         /* Texte principal */
+    --text-secondary: #4a5568;       /* Texte secondaire */
+    --font-base: 18px;               /* Taille de base */
+}</pre>
+        
+        <h2>🎨 Palette de couleurs suggérée (Accessibilité)</h2>
+        <ul>
+            <li><span class="color-example" style="background: #2c5282;"></span> <code>#2c5282</code> - Bleu doux (primaire)</li>
+            <li><span class="color-example" style="background: #4a5568;"></span> <code>#4a5568</code> - Bleu gris (secondaire)</li>
+            <li><span class="color-example" style="background: #f7fafc;"></span> <code>#f7fafc</code> - Fond doux (moins éblouissant)</li>
+            <li><span class="color-example" style="background: #1a202c;"></span> <code>#1a202c</code> - Texte foncé (meilleur contraste)</li>
+        </ul>
+        
+        <h2>📏 Ajuster la taille du texte</h2>
+        <p>Modifie <code>--font-base: 18px;</code> :</p>
+        <ul>
+            <li><code>16px</code> = taille normale</li>
+            <li><code>18px</code> = confortable (recommandé)</li>
+            <li><code>20px</code> = très lisible</li>
+        </ul>
+        
+        <h2>💾 Sauvegarder et tester</h2>
+        <ol>
+            <li>Modifie les valeurs dans <code>:root</code></li>
+            <li>Enregistre le fichier</li>
+            <li>Ouvre-le dans ton navigateur pour voir le résultat</li>
+            <li>Si ça te plaît, redéploie sur Netlify</li>
+        </ol>
+        
+        <p style="margin-top: 30px;">
+            <a href="../support.html" class="btn">← Retour au Support</a>
+        </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Pathologies - ATOMY</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: #2c5282;
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .header h1 { font-size: 1.6em; margin-bottom: 8px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #3182ce;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+            text-decoration: none;
+        }
+        .btn:hover { background: #2c5282; }
+        .btn-secondary { background: #4a5568; }
+        .btn-success { background: #276749; }
+        .form-group { margin: 20px 0; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c5282;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+        .form-group textarea { min-height: 80px; }
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #3182ce;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+        .info-box ol { margin-left: 20px; margin-top: 10px; }
+        .info-box li { margin: 5px 0; }
+        .product-row {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 4px solid #3182ce;
+        }
+        .product-row input { margin: 8px 0; }
+        .output-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 0.9em;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 Admin Pathologies - ATOMY</h1>
+            <p>Ajoute ou modifie une fiche pathologie en 5 minutes</p>
+            <a href="../support.html" class="btn" style="background: white; color: #2c5282; margin-top: 10px;">← Retour au Support</a>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Comment utiliser ce formulaire :</strong>
+            <ol>
+                <li>Remplis les champs ci-dessous</li>
+                <li>Clique sur "🔧 Générer le code"</li>
+                <li>Clique sur "📋 Copier le code JSON"</li>
+                <li>Ouvre <code>outils/pathologies.json</code> et colle à la fin du tableau "pathologies"</li>
+                <li>Redéploie sur Netlify → C'est mis à jour ! 🎉</li>
+            </ol>
+        </div>
+
+        <form id="pathologyForm">
+            <div class="form-group">
+                <label for="id">🔑 ID unique (minuscules, sans espaces) *</label>
+                <input type="text" id="id" placeholder="ex: diabete, fatigue-musculaire..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="title">📌 Titre de la pathologie *</label>
+                <input type="text" id="title" placeholder="ex: Diabète" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">🏷️ Catégorie *</label>
+                <select id="category" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option value="douleurs">Douleurs</option>
+                    <option value="hormonal">Hormonal</option>
+                    <option value="immunite">Immunité</option>
+                    <option value="digestif">Digestif</option>
+                    <option value="peau">Peau</option>
+                    <option value="fertilite">Fertilité</option>
+                    <option value="cancer">Cancer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="summary">📝 Résumé court (1 phrase) *</label>
+                <textarea id="summary" placeholder="ex: Soutien naturel pour la gestion de la glycémie..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>🛒 Produits recommandés *</label>
+                <div id="productsContainer"></div>
+                <button type="button" class="btn btn-secondary" onclick="addProductRow()">+ Ajouter un produit</button>
+            </div>
+
+            <div class="form-group">
+                <label for="dosage">📋 Posologies *</label>
+                <textarea id="dosage" placeholder="• HemoHIM : 3 sachets/jour (matin, midi, soir)&#10;• Noni : 1 sachet/jour&#10;• Glucoska Banaba : 1 sachet/jour À JEUN..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="warnings">⚠️ Précautions importantes</label>
+                <textarea id="warnings" placeholder="⚠️ Ne jamais arrêter un traitement médical sans avis du médecin.&#10;⚠️ Collaboration essentielle avec le médecin traitant..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="tips">💡 Conseils complémentaires</label>
+                <textarea id="tips" placeholder="✅ Alimentation : beaucoup de légumes, protéines à chaque repas&#10;✅ Eau filtrée, température ambiante&#10;✅ Activité physique adaptée..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="source">📚 Source / Date *</label>
+                <input type="text" id="source" placeholder="Zoom FAQ - Marie-José, 27/03/2026" required>
+            </div>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <button type="button" class="btn btn-success" onclick="generateCode()">🔧 Générer le code</button>
+                <button type="button" class="btn" onclick="copyJSON()">📋 Copier le code JSON</button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Réinitialiser</button>
+            </div>
+        </form>
+
+        <div id="output" class="output-box"></div>
+    </div>
+
+    <script>
+        var productCount = 0;
+        
+        function addProductRow() {
+            productCount++;
+            var container = document.getElementById('productsContainer');
+            var productDiv = document.createElement('div');
+            productDiv.className = 'product-row';
+            productDiv.id = 'product-' + productCount;
+            productDiv.innerHTML = 
+                '<strong>Produit #' + productCount + '</strong>' +
+                '<div style="margin: 10px 0;">' +
+                '<label>Nom du produit *</label>' +
+                '<input type="text" class="prod-name" placeholder="ex: HemoHIM" required>' +
+                '</div>' +
+                '<div style="margin: 10px 0;">' +
+                '<label>Lien boutique</label>' +
+                '<input type="url" class="prod-link" placeholder="https://eu.atomy.com/main">' +
+                '</div>' +
+                '<div style="margin: 10px 0;">' +
+                '<label>Note optionnelle</label>' +
+                '<input type="text" class="prod-note" placeholder="ex: Soutien immunitaire">' +
+                '</div>' +
+                '<button type="button" class="btn btn-secondary" onclick="removeProduct(' + productCount + ')" style="padding: 6px 15px; font-size: 0.9em; margin-top: 10px;">🗑️ Supprimer</button>';
+            container.appendChild(productDiv);
+        }
+        
+        function removeProduct(id) {
+            var product = document.getElementById('product-' + id);
+            if (product) {
+                product.remove();
+            }
+        }
+        
+        function generateCode() {
+            var id = document.getElementById('id').value.trim();
+            var title = document.getElementById('title').value.trim();
+            var category = document.getElementById('category').value;
+            var summary = document.getElementById('summary').value.trim();
+            var dosage = document.getElementById('dosage').value.trim();
+            var warnings = document.getElementById('warnings').value.trim();
+            var tips = document.getElementById('tips').value.trim();
+            var source = document.getElementById('source').value.trim();
+            
+            if (!id || !title || !category || !summary || !dosage || !source) {
+                alert('⚠️ Veuillez remplir tous les champs obligatoires (*)');
+                return;
+            }
+            
+            var products = [];
+            var productRows = document.querySelectorAll('.product-row');
+            for (var i = 0; i < productRows.length; i++) {
+                var row = productRows[i];
+                var nameInput = row.querySelector('.prod-name');
+                var linkInput = row.querySelector('.prod-link');
+                var noteInput = row.querySelector('.prod-note');
+                
+                if (nameInput && nameInput.value.trim()) {
+                    var name = nameInput.value.trim();
+                    var link = linkInput ? linkInput.value.trim() : 'https://eu.atomy.com/main';
+                    var note = noteInput ? noteInput.value.trim() : '';
+                    
+                    if (note) {
+                        products.push({ name: name, link: link || 'https://eu.atomy.com/main', note: note });
+                    } else {
+                        products.push({ name: name, link: link || 'https://eu.atomy.com/main' });
+                    }
+                }
+            }
+            
+            if (products.length === 0) {
+                alert('⚠️ Ajoute au moins un produit recommandé');
+                return;
+            }
+            
+            var pathology = {
+                id: id,
+                title: title,
+                category: category,
+                summary: summary,
+                products: products,
+                dosage: dosage
+            };
+            
+            if (warnings) {
+                pathology.warnings = warnings;
+            }
+            if (tips) {
+                pathology.tips = tips;
+            }
+            pathology.source = source;
+            
+            var json = JSON.stringify(pathology, null, 2);
+            var outputDiv = document.getElementById('output');
+            outputDiv.textContent = json;
+            outputDiv.style.display = 'block';
+            outputDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyJSON() {
+            var code = document.getElementById('output').textContent;
+            if (!code) {
+                alert('⚠️ Génère d'abord le code avec le bouton "🔧 Générer le code"');
+                return;
+            }
+            navigator.clipboard.writeText(code).then(function() {
+                alert('✅ Code JSON copié ! Colle-le dans pathologies.json');
+            });
+        }
+        
+        function resetForm() {
+            document.getElementById('pathologyForm').reset();
+            document.getElementById('productsContainer').innerHTML = '';
+            document.getElementById('output').style.display = 'none';
+            productCount = 0;
+        }
+        
+        // Add one product row by default when page loads
+        window.addEventListener('load', function() {
+            addProductRow();
+        });
+    </script>
+</body>
+</html>

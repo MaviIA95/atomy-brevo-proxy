@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Les 8 Étapes du Succès - ATOMY</title>
+    <style>
+        :root {
+            --primary-color: #2c5282;
+            --primary-light: #4a5568;
+            --accent-color: #3182ce;
+            --background: #f7fafc;
+            --surface: #ffffff;
+            --text-primary: #1a202c;
+            --text-secondary: #4a5568;
+            --text-on-primary: #ffffff;
+            --success: #276749;
+            --warning: #975a16;
+            --border-color: #e2e8f0;
+            --font-base: 18px;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: var(--font-base);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: var(--text-on-primary);
+            padding: 40px;
+            border-radius: var(--radius);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(49, 130, 206, 0.4);
+        }
+
+        .btn-print { background: var(--primary-light); }
+        .btn-back { background: white; color: var(--primary-color); }
+
+        .intro-box {
+            background: #ebf8ff;
+            border-left: 5px solid var(--accent-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .intro-box strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .quote-box p {
+            font-size: 1.2em;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .quote-box cite {
+            font-weight: 600;
+            color: #ffd700;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .step-card {
+            background: var(--surface);
+            border: 2px solid var(--border-color);
+            border-left: 5px solid var(--accent-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            transition: all 0.3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border-left-color: var(--primary-color);
+        }
+
+        .step-number {
+            background: var(--accent-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .step-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .step-card ul {
+            margin-left: 20px;
+            margin-top: 15px;
+        }
+
+        .step-card li {
+            margin: 8px 0;
+            color: var(--text-secondary);
+        }
+
+        .important-box {
+            background: #fff7ed;
+            border-left: 5px solid #ed8936;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .important-box h3 {
+            color: #975a16;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .tips-box {
+            background: #c6f6d5;
+            border-left: 5px solid var(--success);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .tips-box h3 {
+            color: var(--success);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .warning-box {
+            background: #fee;
+            border-left: 5px solid #c53030;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .warning-box h3 {
+            color: #c53030;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .duplication-section {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            padding: 40px;
+            border-radius: var(--radius);
+            margin: 30px 0;
+            color: #1a202c;
+        }
+
+        .duplication-section h2 {
+            color: var(--success);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        .math-box {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1.1em;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95em;
+        }
+
+        @media print {
+            .btn { display: none; }
+            body { background: white; }
+            .container { box-shadow: none; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 25px; }
+            .header h1 { font-size: 1.8em; }
+            .steps-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Les 8 Étapes du Succès - ATOMY</h1>
+            <p>Formation basée sur les Zooms FAQ avec Marie-José</p>
+            <div style="margin-top: 20px;">
+                <button onclick="window.print()" class="btn btn-print">🖨️ Imprimer / PDF</button>
+                <a href="../support.html" class="btn btn-back">← Retour au Support</a>
+            </div>
+        </div>
+
+        <div class="intro-box">
+            <strong>💡 Pourquoi ces 8 étapes sont essentielles :</strong>
+            <p>Comme un gâteau, si vous enlevez un ingrédient, le gâteau n'aura plus le même goût. Encore pire, si vous enlevez l'ingrédient principal (la farine), ce ne sera pas un bon gâteau. Ces 8 étapes sont <strong>simples, duplicables et universelles</strong>. Tous ceux qui ont réussi chez ATOMY les utilisent.</p>
+        </div>
+
+        <div class="quote-box">
+            <p>"Le succès est la somme des petites disciplines effectuées chaque jour, jour après jour, sur une longue durée."</p>
+            <cite>— Jim Rohn</cite>
+        </div>
+
+        <div class="quote-box" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <p>"Le succès est la réalisation progressive d'un grand désir."</p>
+            <cite>— Napoleon Hill</cite>
+        </div>
+
+        <h2 style="text-align: center; color: var(--primary-color); margin: 40px 0 30px;">📋 Les 8 Étapes Détaillées</h2>
+
+        <div class="steps-grid">
+            <!-- Étape 1 -->
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>🎯 Se fixer un objectif</h3>
+                <p><strong>"Un objectif, c'est un rêve avec une date"</strong></p>
+                <ul>
+                    <li>Définissez clairement ce que vous voulez accomplir</li>
+                    <li>Écrivez tout sur papier (My Life Scenario)</li>
+                    <li>Chiffrez vos objectifs (maison, voiture, voyage...)</li>
+                    <li>Affichez-les où vous les voyez tous les jours</li>
+                    <li>Vie équilibrée : santé, finances, temps libre, amis</li>
+                </ul>
+            </div>
+
+            <!-- Étape 2 -->
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>🤝 Prendre l'engagement</h3>
+                <p><strong>"Nous devons être le centre de notre vie"</strong></p>
+                <ul>
+                    <li>Ne laissez pas les autres diriger votre vie</li>
+                    <li>Restez positif (la négativité est une infection)</li>
+                    <li>Consommez les produits (vous ne pouvez pas donner ce que vous ne possédez pas)</li>
+                    <li>Restructurez votre temps (arrêtez TV, TikTok inutile...)</li>
+                    <li>Les 2 premières étapes = 90-99% du succès</li>
+                </ul>
+            </div>
+
+            <!-- Étape 3 -->
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>📝 Écrire une liste de noms</h3>
+                <p><strong>"Votre liste = Votre apport financier"</strong></p>
+                <ul>
+                    <li>Listez TOUTES les personnes que vous connaissez</li>
+                    <li>Ne préjugez personne</li>
+                    <li>Ajoutez des noms quotidiennement</li>
+                    <li>Petite liste = petit succès / Grosse liste = gros succès</li>
+                    <li>La vitesse détermine votre succès</li>
+                </ul>
+            </div>
+
+            <!-- Étape 4 -->
+            <div class="step-card">
+                <div class="step-number">4</div>
+                <h3>📞 Inviter les gens</h3>
+                <p><strong>"90% d'une invitation réussie = Enthousiasme"</strong></p>
+                <ul>
+                    <li>L'enthousiasme est gratuit et contagieux</li>
+                    <li>Gardez l'invitation courte (max 2 minutes)</li>
+                    <li>Pratiquez l'invitation tous les jours</li>
+                    <li>Invitez 10-30 personnes par jour</li>
+                    <li>Commencez par les gens que vous connaissez, aimez et à qui vous faites confiance</li>
+                </ul>
+            </div>
+
+            <!-- Étape 5 -->
+            <div class="step-card">
+                <div class="step-number">5</div>
+                <h3>🎬 Présentation</h3>
+                <p><strong>"Mettez les gens devant une présentation"</strong></p>
+                <ul>
+                    <li>Présentations en ligne (Zoom), vidéo, en salle, un à un</li>
+                    <li>Minimum 2-3 présentations par jour dans l'équipe</li>
+                    <li>Ne faites pas vos propres présentations si vous débutez</li>
+                    <li>Appuyez-vous sur les leaders</li>
+                    <li>Ne soyez pas émotionnel face au "NON"</li>
+                </ul>
+            </div>
+
+            <!-- Étape 6 -->
+            <div class="step-card">
+                <div class="step-number">6</div>
+                <h3>🔄 Suivi avec un leader</h3>
+                <p><strong>"Sous 48h après la présentation"</strong></p>
+                <ul>
+                    <li>Les gens oublient après 48h (ils n'écoutent que 3%)</li>
+                    <li>Faites le suivi en vidéo (WhatsApp, Zoom...)</li>
+                    <li>3 parties : Vous + L'invité + Le leader</li>
+                    <li>Édifiez les deux parties</li>
+                    <li>Coupez votre micro, laissez le leader répondre</li>
+                    <li>Prenez des notes (vous serez le leader de demain)</li>
+                </ul>
+            </div>
+
+            <!-- Étape 7 -->
+            <div class="step-card">
+                <div class="step-number">7</div>
+                <h3>💬 Consultation</h3>
+                <p><strong>"Une fois la boutique prise"</strong></p>
+                <ul>
+                    <li> Posez la question : "Pourquoi as-tu signé ?"</li>
+                    <li>Santé → Gardez comme client</li>
+                    <li>Opportunité → Accompagnez comme distributeur</li>
+                    <li>Ne forcez pas les clients à devenir distributeurs</li>
+                    <li>Suivez vos clients (appelez après réception des produits)</li>
+                    <li>Intégrez-les dans l'équipe (ne les gardez pas pour vous)</li>
+                </ul>
+            </div>
+
+            <!-- Étape 8 -->
+            <div class="step-card">
+                <div class="step-number">8</div>
+                <h3>📈 Duplication</h3>
+                <p><strong>"LA PLUS IMPORTANTE"</strong></p>
+                <ul>
+                    <li>Enseignez les 8 étapes à votre nouveau partenaire</li>
+                    <li>Asseyez-vous avec lui, écoutez ses appels, corrigez-le</li>
+                    <li>Système 2 en 24h : Jour 1 = 2, Jour 2 = 4, Jour 3 = 8...</li>
+                    <li>Jour 24 = 16 777 216 personnes</li>
+                    <li>Même avec 1% de succès = 160 000 personnes</li>
+                    <li>"Les gens ne feront pas ce que vous leur demandez. Ils feront ce qu'ils vous VOIENT faire."</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="duplication-section">
+            <h2>🚀 Le Système 2 en 24 Heures</h2>
+            <div class="math-box">
+Jour 1  : 2 personnes
+Jour 2  : 4 personnes
+Jour 3  : 8 personnes
+Jour 6  : 64 personnes
+Jour 24 : 16 777 216 personnes
+
+Même avec 1% de succès (90% disent non) :
+→ 160 000 personnes dans l'organisation
+
+Si chaque personne achète pour 7,99€ :
+→ 400 millions de PV à gauche
+→ 400 millions de PV à droite
+→ Rang Impérial atteint en 18-24 mois !
+            </div>
+            <p style="text-align: center; font-weight: 600; margin-top: 20px;">"On va créer des Impériaux comme des pop-corn !"</p>
+        </div>
+
+        <div class="important-box">
+            <h3>⚠️ Erreurs à Éviter</h3>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li>Sauter les étapes 1-2 (psychologiques)</li>
+                <li>Préjuger des gens sur la liste</li>
+                <li>Parler plus de 2 min dans l'invitation</li>
+                <li>Faire ses propres présentations (débutant)</li>
+                <li>Attendre plus de 48h pour le suivi</li>
+                <li>Répondre aux questions pendant le suivi (laissez le leader)</li>
+                <li>Forcer les clients à devenir distributeurs</li>
+                <li>Garder les partenaires pour soi (intégrez-les dans l'équipe)</li>
+                <li>Ne pas dupliquer le système</li>
+            </ul>
+        </div>
+
+        <div class="tips-box">
+            <h3>💡 Conseils Clés</h3>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li><strong>Vitesse :</strong> "Sans vitesse, vous allez vous aplatir" (comme un avion au décollage)</li>
+                <li><strong>Enthousiasme :</strong> "Vous ne pourrez pas dire la mauvaise chose à la bonne personne avec enthousiasme"</li>
+                <li><strong>Témoignage :</strong> Écrivez votre histoire en 3 phases (Avant ATOMY → Maintenant avec ATOMY → Futur avec ATOMY)</li>
+                <li><strong>Positivité :</strong> "Nous sommes la moyenne des 5 personnes avec lesquelles on passe le plus de temps"</li>
+                <li><strong>Service :</strong> "Nous sommes ici pour servir avec humilité" (devise de la compagnie)</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <h3>🚨 Le "NON" est Normal</h3>
+            <p style="margin-top: 15px;">Avant l'âge de 8 ans, un enfant a déjà dit NON au moins 16 000 fois. C'est ancré dans notre subconscient. Quand les gens disent NON :</p>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li>Ce n'est pas personnel</li>
+                <li>Ça veut dire "pas maintenant" ou "je ne connais pas"</li>
+                <li>Passez au suivant</li>
+                <li>Revenez vers eux plus tard (quand vous avez des résultats)</li>
+                <li>Plus vous lancez la canne, plus vous faites de bonnes pêches !</li>
+            </ul>
+        </div>
+
+        <div class="quote-box" style="background: linear-gradient(135deg, #2c5282 0%, #4a5568 100%);">
+            <p>"Si vous rêvez vivement, cela va se réaliser certainement."</p>
+            <cite>— Hangil Park, CEO ATOMY</cite>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px;">🎯 Prêt à Appliquer le Système ?</h3>
+            <p style="margin-bottom: 20px;">Rejoignez les formations lundi-vendredi 14h pour identifier et résoudre vos problèmes.</p>
+            <a href="https://us07web.zoom.us/j/4621046155" target="_blank" class="btn btn-success" style="font-size: 1.2em; padding: 15px 40px;">📹 Rejoindre un Zoom</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>© 2026 Laurent - BEN MANAGER</strong></p>
+        <p>Partenaire Indépendant ATOMY • Formation basée sur les Zooms FAQ avec Marie-José</p>
+        <p style="margin-top: 10px;">
+            📧 maviservices20@gmail.com | 📱 +33 6 80 24 40 77
+        </p>
+        <p style="margin-top: 15px; font-size: 0.9em;">
+            📚 Document créé à partir de la transcription "Les 8 Étapes du Succès"
+        </p>
+    </div>
+</body>
+</html>

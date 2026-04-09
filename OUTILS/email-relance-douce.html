@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📧 Email Relance Douce - ATOMY</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecef 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .email-preview {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        .email-preview .subject {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #1565c0;
+        }
+        .email-preview .body {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            line-height: 1.8;
+            border: 1px solid #eee;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(240, 147, 251, 0.4); }
+        .btn-print { background: #667eea; }
+        .btn-copy { background: #28a745; }
+        .info-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+        @media print { .btn { display: none; } body { background: white; } .container { box-shadow: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📧 Email Relance Douce</h1>
+            <p>Template pour relancer les prospects (J+3)</p>
+            <a href="#" onclick="window.print()" class="btn btn-print">🖨️ Imprimer / PDF</a>
+            <a href="../support.html" class="btn">← Retour au Support</a>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Quand utiliser cet email ?</strong>
+            <p style="margin-top: 10px;">À envoyer 3 jours après avoir partagé la présentation ATOMY, si la personne n'a pas répondu. Le ton est doux, sans pression.</p>
+        </div>
+
+        <div class="email-preview">
+            <div class="subject">
+                📩 Objet : Petit suivi ATOMY 👋
+            </div>
+            <div class="body">
+                <p>Salut [Prénom],</p>
+                <br>
+                <p>J'espère que tu vas bien ! 😊</p>
+                <br>
+                <p>Je fais un petit suivi pour voir où tu en es avec ATOMY.</p>
+                <br>
+                <p>Tu as pu :</p>
+                <ul style="margin-left: 20px; margin: 10px 0;">
+                    <li>✅ Regarder la présentation ?</li>
+                    <li>❓ As-tu des questions ?</li>
+                    <li>⏰ Ou ce n'est simplement pas le bon moment ?</li>
+                </ul>
+                <br>
+                <p>Dans tous les cas, dis-moi simplement où tu en es — je suis là pour t'aider si besoin, <strong>sans pression</strong> !</p>
+                <br>
+                <p>Belle journée,</p>
+                <p><strong>[Ton Prénom]</strong><br>
+                📧 [ton-email@domaine.com]<br>
+                📱 [ton-téléphone]</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>✅ Conseils d'utilisation :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Personnalise avec le prénom de la personne</li>
+                <li>Adapte le ton à ta relation avec la personne</li>
+                <li>N'envoie pas plus de 2 relances maximum</li>
+                <li>Respecte si la personne ne souhaite pas continuer</li>
+                <li>Sois toujours bienveillant et professionnel</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <button onclick="copyEmail()" class="btn btn-copy">📋 Copier le texte</button>
+            <a href="mailto:?subject=Petit%20suivi%20ATOMY&body=Salut%20[Prénom]%2C%0A%0AJ'espère%20que%20tu%20vas%20bien%20!%20😊%0A%0AJe%20fais%20un%20petit%20suivi%20pour%20voir%20où%20tu%20en%20es%20avec%20ATOMY.%0A%0ATu%20as%20pu%20:%0A-%20Regarder%20la%20présentation%20?%0A-%20As-tu%20des%20questions%20?%0A-%20Ou%20ce%20n'est%20simplement%20pas%20le%20bon%20moment%20?%0A%0ADans%20tous%20les%20cas%2C%20dis-moi%20simplement%20où%20tu%20en%20es%20—%20je%20suis%20là%20pour%20t'aider%20si%20besoin%2C%20sans%20pression%20!%0A%0ABelle%20journée%2C%0A[Ton%20Prénom]" class="btn">✉️ Ouvrir dans ma boîte mail</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>© 2026 Laurent - BEN MANAGER</strong></p>
+            <p>Partenaire Indépendant ATOMY</p>
+            <p style="margin-top: 10px;">
+                📧 maviservices20@gmail.com | 📱 +33 6 80 24 40 77
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function copyEmail() {
+            const text = `Salut [Prénom],
+
+J'espère que tu vas bien ! 😊
+
+Je fais un petit suivi pour voir où tu en es avec ATOMY.
+
+Tu as pu :
+- Regarder la présentation ?
+- As-tu des questions ?
+- Ou ce n'est simplement pas le bon moment ?
+
+Dans tous les cas, dis-moi simplement où tu en es — je suis là pour t'aider si besoin, sans pression !
+
+Belle journée,
+[Ton Prénom]`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Email copié dans le presse-papiers !');
+            });
+        }
+    </script>
+</body>
+</html>

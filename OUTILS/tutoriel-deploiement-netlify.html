@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Tutoriel Déploiement Netlify - ATOMY</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecef 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .step-card {
+            background: #f8f9fa;
+            border-left: 5px solid #00b4db;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+        .step-card h3 { color: #0066cc; margin-bottom: 15px; font-size: 1.4em; }
+        .step-card ol { margin-left: 20px; margin-top: 10px; }
+        .step-card li { margin: 10px 0; }
+        .step-card a { color: #0066cc; font-weight: 600; }
+        .step-card code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            display: block;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .screenshot {
+            background: #eee;
+            border: 2px dashed #00b4db;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            color: #666;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #00b4db 0%, #0083b0 100%);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,180,219,0.4); }
+        .btn-print { background: #667eea; }
+        .btn-success { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .info-box {
+            background: #e3f2fd;
+            border-left: 5px solid #2196f3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+            color: #666;
+        }
+        @media print { .btn { display: none; } body { background: white; } .container { box-shadow: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Tutoriel Déploiement Netlify</h1>
+            <p>Guide pas à pas pour mettre ton site en ligne</p>
+            <a href="#" onclick="window.print()" class="btn btn-print">🖨️ Imprimer / PDF</a>
+            <a href="../support.html" class="btn">← Retour au Support</a>
+        </div>
+
+        <div class="info-box">
+            <strong>⏱️ Temps estimé :</strong> 10-15 minutes<br>
+            <strong>💰 Coût :</strong> 100% gratuit<br>
+            <strong>📋 Pré-requis :</strong> Un compte Netlify + ton fichier index.html
+        </div>
+
+        <div class="step-card">
+            <h3>📁 Étape 1 : Préparer ton dossier</h3>
+            <ol>
+                <li>Crée un nouveau dossier sur ton Bureau (ex: "mon-site-atomy")</li>
+                <li>Dans ce dossier, mets ton fichier <code>index.html</code></li>
+                <li>Vérifie que le fichier s'appelle bien <code>index.html</code> (en minuscules)</li>
+                <li><strong>⚠️ Important :</strong> Le fichier doit être à la RACINE du dossier, pas dans un sous-dossier !</li>
+            </ol>
+            <div class="screenshot">
+                📁 mon-site-atomy/<br>
+                └── 📄 index.html
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🌐 Étape 2 : Se connecter à Netlify</h3>
+            <ol>
+                <li>Va sur <a href="https://app.netlify.com" target="_blank">app.netlify.com</a></li>
+                <li>Connecte-toi avec ton compte (ou crée-en un si ce n'est pas fait)</li>
+                <li>Une fois connecté, tu arrives sur ton tableau de bord</li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>🚀 Étape 3 : Déployer ton site</h3>
+            <ol>
+                <li>Clique sur <strong>"Add new site"</strong> → <strong>"Deploy manually"</strong></li>
+                <li>Une zone apparaît : <strong>"Drag and drop your site folder here"</strong></li>
+                <li><strong>Glisse ton dossier COMPLET</strong> (pas les fichiers un par un !) dans cette zone</li>
+                <li>Attends 30-60 secondes pendant le déploiement</li>
+                <li>✅ C'est en ligne ! Netlify te donne un lien du type : <code>https://xxxxxx.netlify.app</code></li>
+            </ol>
+            <div class="screenshot">
+                🖼️ [Zone de drag & drop Netlify]
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>🔗 Étape 4 : Personnaliser ton nom de site</h3>
+            <ol>
+                <li>Dans Netlify, clique sur ton site</li>
+                <li>Va dans <strong>"Site settings"</strong> (menu gauche, icône ⚙️)</li>
+                <li>Clique sur <strong>"Domain management"</strong></li>
+                <li>Descends à <strong>"Options"</strong> → <strong>"Edit site name"</strong></li>
+                <li>Change le nom (ex: <code>laurent-atomy</code>)</li>
+                <li>Clique sur <strong>"Save"</strong></li>
+                <li>✅ Ton nouveau lien : <code>https://laurent-atomy.netlify.app</code></li>
+            </ol>
+            <div class="warning-box">
+                <strong>⚠️ Attention :</strong>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Le nom doit être UNIQUE sur tout Netlify</li>
+                    <li>Uniquement lettres minuscules, chiffres, tirets (pas d'espaces)</li>
+                    <li>L'ancien lien ne fonctionnera plus après le changement</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <h3>✅ Étape 5 : Tester ton site</h3>
+            <ol>
+                <li>Ouvre ton nouveau lien dans un navigateur</li>
+                <li>Teste avec <code>?parrain=tonnom</code> à la fin de l'URL</li>
+                <li>Vérifie que le formulaire fonctionne</li>
+                <li>Remplis le formulaire avec ton email de test</li>
+                <li>Vérifie que tu reçois l'email de confirmation</li>
+                <li>✅ Tout fonctionne ? C'est prêt à partager !</li>
+            </ol>
+        </div>
+
+        <div class="step-card">
+            <h3>🔄 Mettre à jour ton site</h3>
+            <ol>
+                <li>Modifie ton fichier <code>index.html</code> sur ton PC</li>
+                <li>Enregistre les modifications</li>
+                <li>Va sur Netlify → Ton site → Onglet <strong>"Deploys"</strong></li>
+                <li>En haut : <strong>"Need to update your site? Drag and drop your site folder here"</strong></li>
+                <li>Glisse ton dossier COMPLET à nouveau</li>
+                <li>Attends 30 secondes → ✅ Site mis à jour !</li>
+            </ol>
+        </div>
+
+        <div class="info-box">
+            <strong>💡 Astuces Pro :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Garde toujours une copie de ton fichier index.html sur ton PC</li>
+                <li>Fais des tests après chaque modification</li>
+                <li>Utilise un éditeur de code comme VS Code pour modifier ton HTML</li>
+                <li>Netlify met environ 30 secondes pour déployer — sois patient !</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <strong>⚠️ Problèmes fréquents :</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>"No index.html found"</strong> → Ton fichier n'est pas à la racine du dossier</li>
+                <li><strong>"Page not found"</strong> → Vérifie que le fichier s'appelle bien index.html (minuscules)</li>
+                <li><strong>Le formulaire ne marche pas</strong> → Vérifie ta clé API Brevo dans le code</li>
+                <li><strong>L'email ne part pas</strong> → Vérifie ton automatisation dans Brevo</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <h3 style="color: #0066cc; margin-bottom: 20px;">📞 Besoin d'aide ?</h3>
+            <a href="https://wa.me/33680244077?text=Salut%20Laurent%2C%20j'ai%20un%20problème%20avec%20Netlify%20!" target="_blank" class="btn btn-success">Contacter Laurent sur WhatsApp</a>
+            <a href="guide-autonomie-complet.html" class="btn">Voir le guide autonomie complet</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>© 2026 Laurent - BEN MANAGER</strong></p>
+            <p>Partenaire Indépendant ATOMY</p>
+            <p style="margin-top: 10px;">
+                📧 maviservices20@gmail.com | 📱 +33 6 80 24 40 77
+            </p>
+        </div>
+    </div>
+</body>
+</html>

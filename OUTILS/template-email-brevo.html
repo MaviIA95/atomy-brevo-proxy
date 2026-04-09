@@ -1,0 +1,93 @@
+<!-- TEMPLATE EMAIL BREVO - À copier dans Brevo → Templates → Éditeur HTML -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Votre réservation ATOMY est confirmée !</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 10px; overflow: hidden; }
+        .header { background: linear-gradient(135deg, #00b4db, #0083b0); color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; }
+        .content { padding: 30px; }
+        .content h2 { color: #0066cc; margin-top: 0; }
+        .zoom-box { background: #00b4db; color: white; padding: 20px; border-radius: 10px; text-align: center; margin: 20px 0; }
+        .zoom-box a { color: white; font-weight: bold; text-decoration: none; }
+        .btn { display: inline-block; background: linear-gradient(135deg, #00b4db, #0083b0); color: white; padding: 15px 30px; text-decoration: none; border-radius: 50px; margin: 10px 0; font-weight: bold; }
+        .video-box { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 10px; margin: 25px 0; text-align: center; }
+        .video-box .btn { background: white; color: #667eea; }
+        .warning { background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 15px; margin: 20px 0; font-size: 13px; color: #856404; }
+        .footer { background: #333; color: white; text-align: center; padding: 20px; font-size: 12px; }
+        .footer a { color: #00b4db; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 ATOMY</h1>
+            <p style="margin: 10px 0 0 0;">Votre réservation est confirmée !</p>
+        </div>
+        <div class="content">
+            <p><strong>Bonjour {{params.PRENOM}},</strong></p>
+            <p>Félicitations ! Votre réservation pour le webinaire ATOMY est confirmée.</p>
+            
+            <div class="zoom-box">
+                <p style="margin: 0 0 10px 0; font-size: 16px;">🔗 <strong>Lien Zoom (toutes sessions) :</strong></p>
+                <a href="https://us07web.zoom.us/j/4621046155">https://us07web.zoom.us/j/4621046155</a>
+                <p style="margin: 10px 0 0 0; font-size: 14px;">💡 Conseil : Rejoignez 5 minutes avant le début</p>
+            </div>
+            
+            <h2>📅 Horaires des Sessions</h2>
+            <p><strong>🇫🇷 France :</strong><br>
+            Lundi-Vendredi : 17h et 21h<br>
+            Lundi-Mercredi : 00h (minuit)<br>
+            Samedi : 16h</p>
+            
+            <p><strong>🌍 Autres fuseaux (Lun-Mer) :</strong><br>
+            Canada/USA/Antilles : 19h<br>
+            Guyane : 20h<br>
+            GMT : 23h</p>
+            
+            <h2>💡 Conseils</h2>
+            <ul style="margin-left: 20px;">
+                <li>Rejoignez 5 min avant le début</li>
+                <li>Testez votre audio/vidéo avant</li>
+                <li>Préparez vos questions à l'avance</li>
+                <li>Ayez un stylo pour prendre des notes</li>
+            </ul>
+            
+            <div class="video-box">
+                <h3 style="margin-top: 0; color: #ffd700;">🎥 TÉMOIGNAGE VIDÉO</h3>
+                <p>Marie Jo partage son expérience bouleversante avec ATOMY</p>
+                <a href="https://maviservices.kneo.me/content/e1583k0k/509fdm/" class="btn" style="margin: 15px 0;">▶️ REGARDER LE TÉMOIGNAGE</a>
+                <p style="font-size: 12px; margin-top: 10px; opacity: 0.9;">🔒 Vidéo confidentielle - Ne pas partager</p>
+                <div class="warning" style="margin: 15px 0 0 0; background: rgba(255,255,255,0.2); border-color: #ffd700; color: white;">
+                    <strong>⚠️ Important :</strong> Ce témoignage est personnel. Les produits ATOMY sont des compléments alimentaires et ne remplacent pas un traitement médical.
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin: 30px 0;">
+                <a href="https://us07web.zoom.us/j/4621046155" class="btn">📹 Accéder au Zoom Maintenant</a>
+            </p>
+            
+            <h2>📞 Une question ?</h2>
+            <p>
+                <strong>WhatsApp :</strong> <a href="https://wa.me/33680244077" style="color: #25D366;">+33 6 80 24 40 77</a><br>
+                <strong>Email :</strong> <a href="mailto:maviservices20@gmail.com">maviservices20@gmail.com</a>
+            </p>
+            
+            <div style="text-align: center; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+                <p style="margin: 0; font-size: 18px; color: #0066cc; font-weight: bold;">
+                    À très vite lors du webinaire !<br>
+                    <span style="font-size: 14px; color: #666;">L'équipe ATOMY</span>
+                </p>
+            </div>
+        </div>
+        <div class="footer">
+            <p style="margin: 0 0 10px 0;"><strong>ATOMY - Opportunité Gratuite</strong></p>
+            <p style="margin: 0 0 10px 0;">Partenaire Indépendant : Laurent - BEN MANAGER</p>
+            <p style="margin: 0; font-size: 11px; opacity: 0.8;">© 2026 ATOMY • Ce site n'est pas affilié à Facebook ou Meta Platforms Inc.</p>
+        </div>
+    </div>
+</body>
+</html>
