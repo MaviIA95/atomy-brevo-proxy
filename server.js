@@ -16,7 +16,7 @@ app.post('/api/atomy-contact', async (req, res) => {
   try {
     const { nom, email, telephone, message, source } = req.body;
 
-    // Données pour Brevo
+    // 1️⃣ Email de notification pour toi
     const brevoData = {
       sender: {
         name: "ATOMY MaviServices",
@@ -28,7 +28,7 @@ app.post('/api/atomy-contact', async (req, res) => {
           name: "Laurent - ATOMY"
         }
       ],
-      subject: `📩 Nouveau contact ATOMY - ${nom}`,
+      subject: `📬 Nouveau contact ATOMY - ${nom}`,
       htmlContent: `
         <h2>🌿 Nouveau contact ATOMY</h2>
         <p><strong>Nom :</strong> ${nom}</p>
@@ -43,8 +43,8 @@ app.post('/api/atomy-contact', async (req, res) => {
       tags: ["atomy", "contact", "maviservices"]
     };
 
-    // Envoi via Brevo API
-    const response = await axios.post(
+    // Envoi email notification
+    await axios.post(
       'https://api.brevo.com/v3/smtp/email',
       brevoData,
       {
@@ -56,18 +56,46 @@ app.post('/api/atomy-contact', async (req, res) => {
       }
     );
 
-    res.status(200).json({ 
-      success: true, 
-      message: 'Email envoyé avec succès',
-      messageId: response.data.messageId 
+    // 2️⃣ AJOUT DU CONTACT À LA LISTE BREVO (NOUVEAU !)
+    const listId = parseInt(process.env.BREVO_LIST_ID) || 2;
+    
+    await axios.post(
+      'https://api.brevo.com/v3/contacts',
+      {
+        email: email,
+        listIds: [listId],
+        attributes: {
+          NOM: nom,
+          PRENOM: nom.split(' ')[0] || '',
+          TELEPHONE: telephone || '',
+          SOURCE: source || 'Tunnel ATOMY'
+        },
+        updateEnabled: true // Met à jour si le contact existe déjà
+      },
+      {
+        headers: {
+          'accept': 'application/json',
+          'content-type': 'application/json',
+          'api-key': process.env.BREVO_API_KEY
+        }
+      }
+    );
+
+    console.log(`✅ Contact ${email} ajouté à la liste ${listId}`);
+
+    // Réponse succès
+    res.status(200).json({
+      success: true,
+      message: 'Contact enregistré avec succès',
+      email: email
     });
 
   } catch (error) {
-    console.error('Erreur Brevo:', error.response?.data || error.message);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Erreur lors de l\'envoi',
-      error: error.message 
+    console.error('❌ Erreur Brevo:', error.response?.data || error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de l\'enregistrement',
+      error: error.message
     });
   }
 });
