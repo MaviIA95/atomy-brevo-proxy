@@ -64,12 +64,14 @@ app.post('/api/atomy-contact', async (req, res) => {
       {
         email: email,
         listIds: [listId],
-        attributes: {
-          NOM: nom,
-          PRENOM: nom.split(' ')[0] || '',
-          TELEPHONE: telephone || '',
-          SOURCE: source || 'Tunnel ATOMY'
-        },
+       attributes: {
+  NOM: nom,
+  PRENOM: nom.split(' ')[0] || '',
+  TELEPHONE: telephone || '',
+  SOURCE: source || 'Tunnel ATOMY',
+  PARRAIN: req.body.parrain || 'Non renseigné',
+  PAYS: req.body.pays || 'Non renseigné'
+},
         updateEnabled: true // Met à jour si le contact existe déjà
       },
       {
