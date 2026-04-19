@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 // Route pour recevoir le formulaire
 app.post('/api/atomy-contact', async (req, res) => {
   try {
-    const { nom, email, telephone, message, source } = req.body;
+    const { nom, email, telephone, message, source, parrain, pays } = req.body;
 
     // 1️⃣ Email de notification pour toi
     const brevoData = {
