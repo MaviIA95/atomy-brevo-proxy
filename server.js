@@ -14,12 +14,24 @@ app.use(express.urlencoded({ extended: true }));
 // Route pour recevoir le formulaire
 app.post('/api/atomy-contact', async (req, res) => {
   try {
-   const { nom, email, telephone, message, source, parrain, pays } = req.body;
+    const { nom, email, telephone, message, source } = req.body;
+    
+    // 🔍 EXTRAIRE PARRAIN ET PAYS DU MESSAGE
+    let parrain = '';
+    let pays = '';
+    
+    if (message) {
+      const parrainMatch = message.match(/Parrain:\s*(.+)/i);
+      const paysMatch = message.match(/Pays:\s*(.+)/i);
+      
+      if (parrainMatch) parrain = parrainMatch[1].trim();
+      if (paysMatch) pays = paysMatch[1].trim();
+    }
 
-// 🔍 LOGS DE DÉBOGAGE (à supprimer après)
-console.log('📦 Données reçues:', req.body);
-console.log('👤 Parrain reçu:', parrain);
-console.log('🌍 Pays reçu:', pays);
+    // Logs de débogage
+    console.log('📦 Données reçues:', req.body);
+    console.log('👤 Parrain extrait:', parrain);
+    console.log('🌍 Pays extrait:', pays);
 
     // 1️⃣ Email de notification pour toi
     const brevoData = {
@@ -40,6 +52,8 @@ console.log('🌍 Pays reçu:', pays);
         <p><strong>Email :</strong> ${email}</p>
         <p><strong>Téléphone :</strong> ${telephone || 'Non renseigné'}</p>
         <p><strong>Source :</strong> ${source || 'Site web'}</p>
+        <p><strong>Parrain :</strong> ${parrain || 'Non renseigné'}</p>
+        <p><strong>Pays :</strong> ${pays || 'Non renseigné'}</p>
         <p><strong>Message :</strong></p>
         <blockquote>${message}</blockquote>
         <hr>
@@ -61,7 +75,7 @@ console.log('🌍 Pays reçu:', pays);
       }
     );
 
-    // 2️⃣ AJOUT DU CONTACT À LA LISTE BREVO (NOUVEAU !)
+    // 2️⃣ AJOUT DU CONTACT À LA LISTE BREVO
     const listId = parseInt(process.env.BREVO_LIST_ID) || 2;
     
     await axios.post(
@@ -69,15 +83,15 @@ console.log('🌍 Pays reçu:', pays);
       {
         email: email,
         listIds: [listId],
-       attributes: {
-  NOM: nom,
-  PRENOM: nom.split(' ')[0] || '',
-  TELEPHONE: telephone || '',
-  SOURCE: source || 'Tunnel ATOMY',
-  PARRAIN: parrain || '',  // Utilise la variable directe
-  PAYS: pays || ''          // Utilise la variable directe
-},
-        updateEnabled: true // Met à jour si le contact existe déjà
+        attributes: {
+          NOM: nom,
+          PRENOM: nom.split(' ')[0] || '',
+          TELEPHONE: telephone || '',
+          SOURCE: source || 'Tunnel ATOMY',
+          PARRAIN: parrain,
+          PAYS: pays
+        },
+        updateEnabled: true
       },
       {
         headers: {
@@ -105,13 +119,4 @@ console.log('🌍 Pays reçu:', pays);
       error: error.message
     });
   }
-});
-
-// Route de santé
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', service: 'atomy-brevo-proxy' });
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 Proxy Brevo démarré sur le port ${PORT}`);
 });
