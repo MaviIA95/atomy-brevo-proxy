@@ -29,7 +29,7 @@ app.post('/api/atomy-contact', async (req, res) => {
     }
 
     // Logs de débogage
-    console.log('📦 Données reçues:', req.body);
+    console.log('📦 Données reçues:', JSON.stringify(req.body, null, 2));
     console.log('👤 Parrain extrait:', parrain);
     console.log('🌍 Pays extrait:', pays);
 
@@ -51,9 +51,9 @@ app.post('/api/atomy-contact', async (req, res) => {
         <p><strong>Nom :</strong> ${nom}</p>
         <p><strong>Email :</strong> ${email}</p>
         <p><strong>Téléphone :</strong> ${telephone || 'Non renseigné'}</p>
-        <p><strong>Source :</strong> ${source || 'Site web'}</p>
         <p><strong>Parrain :</strong> ${parrain || 'Non renseigné'}</p>
         <p><strong>Pays :</strong> ${pays || 'Non renseigné'}</p>
+        <p><strong>Source :</strong> ${source || 'Site web'}</p>
         <p><strong>Message :</strong></p>
         <blockquote>${message}</blockquote>
         <hr>
@@ -119,4 +119,13 @@ app.post('/api/atomy-contact', async (req, res) => {
       error: error.message
     });
   }
+});
+
+// Route de santé
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', service: 'atomy-brevo-proxy' });
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Proxy Brevo démarré sur le port ${PORT}`);
 });
