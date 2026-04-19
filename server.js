@@ -69,8 +69,8 @@ app.post('/api/atomy-contact', async (req, res) => {
   PRENOM: nom.split(' ')[0] || '',
   TELEPHONE: telephone || '',
   SOURCE: source || 'Tunnel ATOMY',
-  PARRAIN: req.body.parrain || 'Non renseigné',
-  PAYS: req.body.pays || 'Non renseigné'
+  PARRAIN: req.body.parrain || '',
+  PAYS: req.body.pays || ''
 },
         updateEnabled: true // Met à jour si le contact existe déjà
       },
